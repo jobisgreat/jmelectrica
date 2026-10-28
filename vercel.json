@@ -1,0 +1,6 @@
+{
+  "buildCommand": "echo 'static site, prebuilt in site/'",
+  "outputDirectory": "site",
+  "framework": null,
+  "cleanUrls": false
+}
