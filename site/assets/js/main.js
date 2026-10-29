@@ -64,3 +64,20 @@
   var y = document.getElementById('year');
   if (y) y.textContent = new Date().getFullYear();
 })();
+
+// "View Your Proposal" bar: only when the site was opened from the proposal (?from=proposal), so the public never sees it.
+(function () {
+  var q = new URLSearchParams(location.search), p = q.get('p'), on = q.get('from') === 'proposal';
+  try {
+    if (on) sessionStorage.setItem('jm-proposal', p || '');
+    else if (sessionStorage.getItem('jm-proposal') !== null) { on = true; p = sessionStorage.getItem('jm-proposal'); }
+  } catch (e) {}
+  if (!on) return;
+  var bar = document.createElement('div');
+  bar.className = 'proposal-bar';
+  var a = document.createElement('a');
+  a.href = '/proposal/' + (p ? '?p=' + encodeURIComponent(p) : '');
+  a.textContent = 'View Your Proposal →';
+  bar.appendChild(a);
+  document.body.insertBefore(bar, document.body.firstChild);
+})();
