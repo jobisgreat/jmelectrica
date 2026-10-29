@@ -253,15 +253,16 @@ AREAS = {
   "Nearby Boston neighborhoods": ["Roxbury", "South End", "Jamaica Plain", "Mattapan", "Roslindale", "Hyde Park", "West Roxbury"],
 }
 
-# Review excerpts are SAMPLES written from themes in JM's real reviews. Each one
-# is tagged on the page. Replace with verbatim Google review text before launch.
+# Real customer reviews of JM Electrical Solutions, copied word for word from the public
+# listing at vymaps.com/US/Jm-Electrical-Solutions-222083 (reviewer names not shown there).
+# Topic labels are ours. Confirm against Google and add first name + last initial if wanted.
 REVIEWS_SAMPLE = [
-  ("Clean job site", "They put down drop cloths, cleaned up every bit of dust, and left the basement cleaner than before they arrived."),
-  ("Clear explanations", "Jamie took the time to explain exactly what was wrong with our panel and what our options were. No pressure, no jargon."),
-  ("Fair pricing", "The quote was fair and the final bill matched it. No surprises."),
-  ("Punctual & responsive", "Called back the same day, showed up when they said they would, and kept us updated the whole way."),
-  ("Small jobs, no attitude", "We only needed a couple of outlets fixed and they treated it like it mattered. We'll call them for the big stuff too."),
-  ("Professional technicians", "Nic and Dan were professional, careful in our home and clearly knew what they were doing."),
+  ("Recessed lighting", "Jamie is a true professional. Showed up on time and performed quality work. We had 12 recessed lights installed along with a few dimmers. Quote was reasonable and the work was done very well."),
+  ("Outlet repair", "Jamie was very responsive to my emails in scheduling an appointment time. He arrived right on time as promised and completed the outlet repair/replacement neatly and efficiently."),
+  ("Fair price, on time", "Would definitely use JM Electrical Solutions again! Jamie made the process so easy. Great work, very reasonable price, arrived on time."),
+  ("Office remodel", "Our Interior Design business recently hired JM Electrical Solutions for an office remodel. Jamie was responsive, insightful and had great customer service. We were so pleased with the outcome and value of their service."),
+  ("Quality work", "The quality of work is very impressive! I will be using JM Electrical Solutions for all of my future projects!"),
+  ("Professional & timely", "Jamie and his team are professional and timely."),
 ]
 
 # ---------------------------------------------------------------- shared parts
@@ -357,18 +358,18 @@ def review_cards(items):
     for topic, text in items:
         out.append(f"""<figure class="review"><span class="topic">{topic}</span>
 <blockquote><p>“{text}”</p></blockquote>
-<figcaption><span class="stars" aria-label="5 out of 5 stars">★★★★★</span> Google review <span class="ph-tag">Sample: swap for verbatim review</span></figcaption></figure>""")
+<figcaption><span class="stars" aria-label="5 out of 5 stars">★★★★★</span> Customer review</figcaption></figure>""")
     return '<div class="reviews">' + "".join(out) + "</div>"
 
 def review_showcase(items, heading_tag="h2", more_link=True):
     """Dark 'Customer Reviews' panel over the office photo: rating card + review cards."""
     bg = ""
-    if os.path.exists(os.path.join(OUT, "assets/img/office-sign.webp")):
-        bg = ('<picture class="rs-bg"><source media="(max-width: 700px)" srcset="assets/img/office-sign-800.webp">'
-              '<img src="assets/img/office-sign.webp" alt="" width="1600" height="744" loading="lazy" decoding="async"></picture>')
+    if os.path.exists(os.path.join(OUT, "assets/img/hero-fleet.webp")):
+        bg = ('<picture class="rs-bg"><source media="(max-width: 700px)" srcset="assets/img/hero-fleet-800.webp">'
+              '<img src="assets/img/hero-fleet.webp" alt="" width="1600" height="900" loading="lazy" decoding="async"></picture>')
     cards = "".join(f"""<figure class="rs-card"><div class="rs-stars" aria-label="5 out of 5 stars">★★★★★</div>
 <p class="rs-topic">{topic}</p><blockquote><p>{text}</p></blockquote>
-<figcaption>Google review <span class="ph-tag">Sample: swap for verbatim review</span></figcaption></figure>""" for topic, text in items)
+<figcaption>Customer review</figcaption></figure>""" for topic, text in items)
     more = f'<a class="rs-link" href="reviews.html">Read more reviews</a>' if more_link else ""
     return f"""<section class="review-show" aria-labelledby="rs-title">
   {bg}
@@ -716,11 +717,11 @@ def about():
 
 def reviews():
     content = f"""<h2><span class="stars" aria-hidden="true">★★★★★</span> {RATING} out of 5 from {REVIEWS} Google reviews</h2>
-<p>These are the themes that come up most often in our reviews. <a href="{GOOGLE_REVIEWS_URL}" rel="noopener"><strong>Read every review on Google</strong></a>.</p>
+<p>A few of the reviews homeowners and businesses have left for Jamie and the team. <a href="{GOOGLE_REVIEWS_URL}" rel="noopener"><strong>Read every review on Google</strong></a>.</p>
 {review_cards(REVIEWS_SAMPLE)}
 <h2>Worked with us?</h2>
 <p>Reviews help other Boston homeowners find a good electrician. <a href="{GOOGLE_REVIEWS_URL}" rel="noopener">Leave us a Google review</a>.</p>
-<p><span class="ph-tag">Before launch: replace each sample with a verbatim Google review (first name + last initial, with permission)</span></p>"""
+"""
     simple_page("reviews.html", f"Reviews | {RATING}★ Electrician in Dorchester & Boston | {BIZ}",
                 f"{BIZ} has {RATING}★ from {REVIEWS} Google reviews. Homeowners in Dorchester and Boston mention clean job sites, clear explanations and fair pricing.",
                 "Reviews from Boston Homeowners", f"{RATING}★ from {REVIEWS} Google reviews. Here's what keeps coming up.", content, "Reviews",
