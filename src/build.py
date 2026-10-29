@@ -480,7 +480,7 @@ def home():
         <li class="badge">{I_CHECK.replace('<svg', '<svg width="16" height="16"')} MA License #{LICENSE}</li>
         <li class="badge badge--owner">Owner-operated by {OWNER}</li>
       </ul>
-      <p class="lead hide-sm" style="font-size:1rem">Based at {STREET}. Serving Dorchester, South Boston and surrounding Boston neighborhoods.</p>
+      <p class="lead hide-sm" style="font-size:1rem">Serving Dorchester, South Boston and surrounding Boston neighborhoods.</p>
     </div>
     <div id="quote">{lead_form("hero", heading="Get a clear quote", note="Three quick fields. We'll call you back to talk it through.")}</div>
   </div>
