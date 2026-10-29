@@ -57,7 +57,11 @@ def sign(pad=10):
     body += f'<g fill="url(#jms)"><path transform="translate(186,{pad+50})" d="{l1}"/><path transform="translate(186,{pad+104})" d="{l2}"/></g></g>'
     return svg(int(186 + tw + 14), 166, body)
 
-def van(pad=12, depth=7):
+# Traced from Tim's close-up photo of the van door decal: chunky J with a low hooked foot,
+# thick top bar, wide bolt shoulder under the M, slit beside the right leg. Already slanted.
+VAN_MARK = "M44.8 6.1 L143.6 0 L144.6 74.8 L115.5 78.8 L121.5 19.5 L104 20.5 L103 58 L110 59.5 L104.5 84.1 L78.4 142 L86.2 86.6 L71.9 85 L77.4 80.9 L83.5 24.5 L66.5 24.5 L59 82.9 L54.4 89.6 L5.1 93.7 L0 85 L4.1 63.2 L26.5 62.1 L28.5 71.3 L38.7 70.3Z"
+
+def van(pad=12, depth=3.5):
     # Matches the van decal: blue fading dark-to-light top to bottom, with a dark navy 3D edge
     # dropping down and to the left. No amber underline.
     l1, w1 = text_path("ELECTRICAL", 46, .04)
@@ -66,14 +70,14 @@ def van(pad=12, depth=7):
     defs = ('<defs><linearGradient id="jmv" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1c3d9c"/>'
             '<stop offset=".55" stop-color="#2a6fd6"/><stop offset="1" stop-color="#5ab4f0"/></linearGradient>'
             '<linearGradient id="jmt" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1c3d9c"/><stop offset="1" stop-color="#2f7fe0"/></linearGradient>'
-            f'<path id="jmm" d="{MARK}" transform="skewX(-12)"/>'
+            f'<path id="jmm" d="{VAN_MARK}"/>'
             f'<path id="jl1" d="{l1}"/><path id="jl2" d="{l2}"/></defs>')
     edge = "#0a1a40"
-    mx, my = 40 + depth, pad
+    mx, my = depth + 4, pad
     body = defs + f'<g transform="translate({mx},{my})">'
-    body += "".join(f'<use href="#jmm" x="{-i}" y="{i}" fill="{edge}"/>' for i in [k / 2 for k in range(depth * 2, 0, -1)])
-    body += '<use href="#jmm" fill="url(#jmv)"/></g>'
-    tx = 186 + depth
+    body += "".join(f'<use href="#jmm" x="{-i}" y="{i}" fill="{edge}" stroke="{edge}" stroke-width="2.5" stroke-linejoin="round"/>' for i in [k / 2 for k in range(int(depth * 2), 0, -1)])
+    body += '<use href="#jmm" fill="url(#jmv)" stroke="url(#jmv)" stroke-width="2.5" stroke-linejoin="round"/></g>'
+    tx = mx + 145 + 20
     for ref, ty in (("jl1", pad + 50), ("jl2", pad + 104)):
         body += f'<g transform="translate({tx},{ty})">'
         body += "".join(f'<use href="#{ref}" x="{-i}" y="{i}" fill="{edge}"/>' for i in (3, 2.5, 2, 1.5, 1, .5))
