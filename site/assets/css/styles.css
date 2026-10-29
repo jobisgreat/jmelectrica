@@ -391,3 +391,7 @@ ul, ol { padding-left: 1.2em; }
   .rs-grid { grid-template-columns: .9fr 1.1fr; align-items: center; gap: 28px; }
   .rs-score { padding: 36px 28px; }
 }
+
+/* Shown only when the site is opened from the proposal (main.js) */
+.proposal-bar { background: var(--amber); text-align: center; padding: 0 16px; }
+.proposal-bar a { display: inline-flex; align-items: center; min-height: 44px; color: #1b2430; font-weight: 700; text-decoration: underline; text-underline-offset: 4px; }

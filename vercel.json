@@ -1,6 +1,2 @@
-{
-  "buildCommand": "echo 'static site, prebuilt in site/'",
-  "outputDirectory": "site",
-  "framework": null,
-  "cleanUrls": false
-}
+{"buildCommand":"echo 'static site, prebuilt in site/'","outputDirectory":"site","framework":null,"cleanUrls":false,
+ "headers":[{"source":"/(proposal|agreement|preview)/(.*)","headers":[{"key":"X-Robots-Tag","value":"noindex, nofollow"}]}]}
