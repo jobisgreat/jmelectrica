@@ -57,6 +57,29 @@ def sign(pad=10):
     body += f'<g fill="url(#jms)"><path transform="translate(186,{pad+50})" d="{l1}"/><path transform="translate(186,{pad+104})" d="{l2}"/></g></g>'
     return svg(int(186 + tw + 14), 166, body)
 
+def van(pad=12, depth=7):
+    # Matches the van decal: blue fading dark-to-light top to bottom, with a dark navy 3D edge
+    # dropping down and to the left. No amber underline.
+    l1, w1 = text_path("ELECTRICAL", 46, .04)
+    l2, w2 = text_path("SOLUTIONS", 46, .04)
+    tw = max(w1, w2)
+    defs = ('<defs><linearGradient id="jmv" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1c3d9c"/>'
+            '<stop offset=".55" stop-color="#2a6fd6"/><stop offset="1" stop-color="#5ab4f0"/></linearGradient>'
+            '<linearGradient id="jmt" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1c3d9c"/><stop offset="1" stop-color="#2f7fe0"/></linearGradient>'
+            f'<path id="jmm" d="{MARK}" transform="skewX(-12)"/>'
+            f'<path id="jl1" d="{l1}"/><path id="jl2" d="{l2}"/></defs>')
+    edge = "#0a1a40"
+    mx, my = 40 + depth, pad
+    body = defs + f'<g transform="translate({mx},{my})">'
+    body += "".join(f'<use href="#jmm" x="{-i}" y="{i}" fill="{edge}"/>' for i in [k / 2 for k in range(depth * 2, 0, -1)])
+    body += '<use href="#jmm" fill="url(#jmv)"/></g>'
+    tx = 186 + depth
+    for ref, ty in (("jl1", pad + 50), ("jl2", pad + 104)):
+        body += f'<g transform="translate({tx},{ty})">'
+        body += "".join(f'<use href="#{ref}" x="{-i}" y="{i}" fill="{edge}"/>' for i in (3, 2.5, 2, 1.5, 1, .5))
+        body += f'<use href="#{ref}" fill="url(#jmt)"/></g>'
+    return svg(int(tx + tw + 12), pad + 104 + 44 + depth, body)
+
 def stacked(letters, bolt, words, bg=None, knock=WHITE):
     l1, w1 = text_path("ELECTRICAL", 34, .04)
     l2, w2 = text_path("SOLUTIONS", 34, .04)
@@ -80,6 +103,7 @@ if __name__ == "__main__":
       "jm-logo-mono-black.svg": horizontal("#111", "#111", "#111"),
       "jm-icon.svg": icon(WHITE, AMBER, NAVY),
       "jm-logo-sign.svg": sign(),
+      "jm-logo-van.svg": van(),
     }
     for n, s in files.items():
         open(os.path.join(OUT, n), "w").write(s)

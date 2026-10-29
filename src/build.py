@@ -322,7 +322,7 @@ def header(current):
 </div></div>
 <header class="site-header">
   <div class="container header-inner">
-    <a class="brand" href="index.html"><picture><source media="(max-width: 639px)" srcset="assets/img/jm-logo-sign.svg"><img src="assets/img/jm-logo-horizontal.svg" alt="{BIZ} home" width="235" height="64"></picture></a>
+    <a class="brand" href="index.html"><img src="assets/img/jm-logo-van.svg" alt="{BIZ} home" width="196" height="64"></a>
     <a class="header-call" href="{TEL}">{I_PHONE}<span>{PHONE}</span></a>
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
   </div>
