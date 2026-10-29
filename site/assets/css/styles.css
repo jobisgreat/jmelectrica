@@ -319,6 +319,7 @@ ul, ol { padding-left: 1.2em; }
   .cards { grid-template-columns: repeat(4, 1fr); }
   .steps { grid-template-columns: repeat(4, 1fr); }
   .layout { grid-template-columns: 1fr 340px; }
+  .layout--even { grid-template-columns: 1fr 1.25fr; align-items: center; }
   .sidebar .lead-form { position: sticky; top: 96px; }
   .footer-grid { grid-template-columns: 1.3fr 1fr 1fr 1fr; }
   .site-footer { padding-bottom: 40px; }

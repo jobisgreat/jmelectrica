@@ -398,7 +398,7 @@ def real_photo(src, alt, caption, w, h):
         return photo("Photo: " + alt + ".", caption)
     return f'<figure class="photo"><img src="{src}" alt="{esc(alt)}" width="{w}" height="{h}" loading="lazy" decoding="async"><figcaption>{esc(caption)}</figcaption></figure>'
 
-JAMIE = ("assets/img/jamie-maguire-van.jpg", "Jamie Maguire standing beside the JM Electrical Solutions work van with ladders on the roof rack", "Owner Jamie Maguire with the JM Electrical van.", 520, 293)
+JAMIE = ("assets/img/jamie-maguire-van.jpg", "Jamie Maguire standing beside the JM Electrical Solutions work van with ladders on the roof rack", "Owner Jamie Maguire with the JM Electrical van.", 1200, 675)
 
 def financing_box():
     return f"""<aside class="financing" aria-label="Financing">
@@ -533,7 +533,7 @@ def home():
 </section>
 
 <section class="section" aria-labelledby="team-title">
-  <div class="container layout">
+  <div class="container layout layout--even">
     <div>
       <h2 id="team-title">A local electrician who explains the work</h2>
       <p>{BIZ} is run by {OWNER} out of {STREET} in Dorchester. Jamie and technicians Nic and Dan are the people who show up at your door. Reviewers mention them by name for being professional, punctual and easy to deal with.</p>
