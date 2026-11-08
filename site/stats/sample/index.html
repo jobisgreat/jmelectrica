@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>JM Electrical Solutions · Results Dashboard example</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0d0e11; --panel:#15171c; --panel-2:#1b1e25; --line:#2a2e37;
+    --ink:#f5f6f8; --muted:#9aa1ad; --faint:#6b7280;
+    --amber:#f6b23d; --amber-bright:#ffc24b; --amber-dim:rgba(246,178,61,.14);
+    --a1:rgba(246,178,61,.35); --a2:rgba(246,178,61,.65); --a3:#f6b23d;
+    --up:#5fd08a;
+    --radius:14px;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:"IBM Plex Sans",system-ui,sans-serif;
+    font-size:16px; line-height:1.5; letter-spacing:-.01em;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1120px; margin:0 auto; padding:clamp(16px,4vw,48px)}
+  .num{font-variant-numeric:tabular-nums lining-nums}
+  .mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+
+  /* ---- sample strip (always visible) ---- */
+  .sample-strip{
+    position:sticky; top:0; z-index:5;
+    background:repeating-linear-gradient(135deg,#f6b23d 0 14px,#e9a52f 14px 28px);
+    color:#1a1507; text-align:center; font-weight:700; letter-spacing:.08em;
+    font-size:clamp(13px,2.4vw,16px); padding:9px 16px; text-transform:uppercase;
+    box-shadow:0 2px 0 rgba(0,0,0,.35);
+  }
+  .sample-strip span{font-weight:500; letter-spacing:.02em; text-transform:none; opacity:.85}
+
+  /* ---- top bar ---- */
+  .top{display:flex; align-items:flex-end; justify-content:space-between; gap:16px 20px; flex-wrap:wrap; margin-bottom:8px}
+  .launched{font-size:12px; font-weight:500; letter-spacing:.06em; color:var(--ink); margin-bottom:6px}
+  .foot .pwr{color:var(--ink); font-weight:600}
+  .eyebrow{font-size:12px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--amber)}
+  h1{font-size:clamp(26px,4vw,38px); font-weight:700; margin:.15em 0 0; letter-spacing:-.02em; line-height:1.1}
+  .sub{color:var(--muted); font-size:14px; margin-top:6px}
+  .stamp{color:var(--faint); font-size:13px}
+
+  .banner{
+    margin:22px 0 0; padding:16px 18px; border-radius:var(--radius);
+    background:var(--amber-dim); border:1px solid rgba(246,178,61,.45);
+    font-size:14.5px; display:flex; gap:12px; align-items:flex-start;
+  }
+  .banner b{color:var(--amber-bright)}
+  .banner svg{flex:none; width:18px; height:18px; margin-top:2px; color:var(--amber)}
+
+  /* ---- grid ---- */
+  .grid{display:grid; gap:18px; margin-top:22px}
+  .row{display:grid; gap:18px; min-width:0}
+  .row > *{min-width:0}
+  @media(min-width:760px){ .row.four{grid-template-columns:1fr 1fr} }
+  @media(min-width:760px){ .row.three{grid-template-columns:repeat(3,1fr)} .row.two{grid-template-columns:1fr 1fr} }
+  @media(min-width:900px){ .row.split{grid-template-columns:1.35fr 1fr} .row.wide{grid-template-columns:1fr 2fr} }
+
+  .card{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:22px; position:relative}
+  .card h2{font-size:12px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:0 0 16px; display:flex; justify-content:space-between; gap:10px}
+  .tag{font-family:"IBM Plex Mono",monospace; font-size:10px; letter-spacing:.1em; color:var(--amber); border:1px solid rgba(246,178,61,.4); border-radius:4px; padding:1px 6px; height:fit-content; white-space:nowrap}
+
+  /* ---- hero numbers ---- */
+  .hero .big{font-size:clamp(46px,7vw,68px); font-weight:700; line-height:.95; letter-spacing:-.03em}
+  .hero .label{color:var(--muted); font-size:14px; margin-top:10px; display:flex; gap:10px; flex-wrap:wrap; align-items:baseline}
+  .delta{font-weight:600; font-size:14px; color:var(--up)}
+  .delta.base{color:var(--faint); font-weight:500}
+  .hero.current{border-color:rgba(246,178,61,.55); box-shadow:0 0 0 1px rgba(246,178,61,.15), 0 10px 40px -20px rgba(246,178,61,.45)}
+  .hero .spark{margin-top:18px}
+
+  /* ---- bars ---- */
+  .bars{display:flex; align-items:flex-end; gap:2px; height:150px; position:relative}
+  .bars.spark{height:42px}
+  .bars.spark.tall{height:72px}
+  .bar{flex:1; min-width:1px; background:var(--amber); border-radius:2px 2px 0 0; height:var(--h,0%); opacity:.9}
+  .bar.wkend{opacity:.45}
+  .bars.spark .bar{opacity:.85}
+  .bars.spark .bar.off{opacity:.18}
+  .avg{position:absolute; left:0; right:0; border-top:1px dashed rgba(245,246,248,.45); pointer-events:none}
+  .avg span{position:absolute; right:0; top:-19px; font-size:11px; color:var(--muted); background:var(--panel); padding:0 4px}
+  .axis{display:flex; color:var(--faint); font-size:11px; margin-top:8px}
+  .axis span{flex:var(--f,1); border-left:1px solid var(--line); padding-left:6px}
+  .axis span:first-child{border-left:0; padding-left:0}
+
+  /* month columns */
+  .months{display:flex; align-items:flex-end; gap:clamp(14px,4vw,34px); height:190px; padding-top:26px}
+  .mcol{flex:1; display:flex; flex-direction:column; align-items:center; height:100%; justify-content:flex-end}
+  .mcol .v{font-weight:700; font-size:18px; margin-bottom:6px}
+  .mcol .b{flex:none; width:100%; max-width:84px; height:calc(var(--h) * .52); border-radius:6px 6px 0 0; background:var(--c,var(--amber))}
+  .mcol .m{color:var(--muted); font-size:13px; margin-top:8px; white-space:nowrap}
+
+  /* ---- horizontal bars ---- */
+  .hbars{display:flex; flex-direction:column; gap:13px}
+  .hbar .meta{display:flex; justify-content:space-between; gap:12px; font-size:14px; margin-bottom:6px}
+  .hbar .path{overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+  .hbar .path small{color:var(--faint); font-size:12px; margin-left:6px}
+  .hbar .val{color:var(--muted); flex:none; font-weight:600}
+  .track{height:9px; background:var(--panel-2); border-radius:5px; overflow:hidden}
+  .fill{height:100%; background:var(--amber); border-radius:5px; width:var(--w,0%)}
+
+  /* grouped key-page bars */
+  .kgroup{display:flex; flex-direction:column; gap:18px}
+  .krow .meta{display:flex; justify-content:space-between; gap:10px; font-size:14px; margin-bottom:7px}
+  .krow .meta .up{color:var(--up); font-weight:600; white-space:nowrap}
+  .ktracks{display:flex; flex-direction:column; gap:4px}
+  .kt{display:grid; grid-template-columns:34px 1fr 38px; align-items:center; gap:8px; font-size:12px; color:var(--faint)}
+  .kt .track{height:8px}
+  .kt .n{text-align:right; color:var(--muted); font-weight:600}
+  .kt.m1 .fill{background:var(--a1)} .kt.m2 .fill{background:var(--a2)} .kt.m3 .fill{background:var(--a3)}
+
+  /* ---- donut ---- */
+  .donut-wrap{display:flex; gap:24px; align-items:center; flex-wrap:wrap}
+  .donut{width:156px; height:156px; flex:none; border-radius:50%; position:relative}
+  .donut::after{content:""; position:absolute; inset:27px; background:var(--panel); border-radius:50%}
+  .donut .center{position:absolute; inset:0; display:grid; place-content:center; text-align:center; z-index:1}
+  .donut .center .n{font-size:28px; font-weight:700; line-height:1.05}
+  .donut .center .l{font-size:11px; color:var(--muted); letter-spacing:.08em; text-transform:uppercase}
+  .legend{display:flex; flex-direction:column; gap:10px; font-size:14px; flex:1; min-width:150px}
+  .legend .li{display:flex; align-items:center; gap:10px}
+  .legend .dot{width:10px; height:10px; border-radius:3px; flex:none}
+  .legend .lv{margin-left:auto; color:var(--muted); font-weight:600}
+  .legend .pct{color:var(--faint); font-weight:500; margin-left:6px; min-width:34px; text-align:right}
+  .note{color:var(--faint); font-size:13px; margin-top:14px}
+  .keylegend{display:flex; gap:14px; flex-wrap:wrap; font-size:12px; color:var(--muted); margin:-4px 0 14px}
+  .keylegend i{display:inline-block; width:10px; height:10px; border-radius:3px; margin-right:6px; vertical-align:-1px}
+
+  .glance{display:grid; gap:12px 28px; margin:0; padding:0; list-style:none}
+  @media(min-width:760px){ .glance{grid-template-columns:1fr 1fr} }
+  .glance li{display:flex; gap:12px; align-items:flex-start; font-size:15px; line-height:1.45}
+  .glance li b{color:var(--amber-bright); font-weight:700}
+  .glance .ic{flex:none; width:26px; height:26px; border-radius:7px; background:var(--amber-dim); color:var(--amber); display:grid; place-content:center; font-size:13px; font-weight:700; margin-top:-1px}
+  .rate{display:flex; justify-content:space-between; gap:10px; margin-top:16px; padding-top:14px; border-top:1px solid var(--line)}
+  .rate div{flex:1; text-align:center}
+  .rate .rn{font-size:20px; font-weight:700}
+  .rate .rl{font-size:12px; color:var(--faint)}
+  .rate-h{font-size:12px; color:var(--muted); margin-top:14px; letter-spacing:.02em}
+  .seg{position:absolute; border-top:2px dashed rgba(245,246,248,.7); pointer-events:none}
+  .chart-key{display:flex; gap:16px; flex-wrap:wrap; font-size:12px; color:var(--muted); margin:-4px 0 12px}
+  .chart-key i{display:inline-block; width:14px; border-top:2px dashed rgba(245,246,248,.7); margin-right:6px; vertical-align:3px}
+  .mini3{display:flex; align-items:flex-end; gap:6px; height:42px}
+  .mini3 div{flex:1; border-radius:3px 3px 0 0; height:var(--h); background:var(--c)}
+  .mini3.mini4{height:72px}
+  .mini4-l{display:flex; gap:6px; margin-top:6px}
+  .mini4-l span{flex:1; font-size:12px; color:var(--muted); white-space:nowrap}
+  .mini4-l span.off{opacity:.5}
+  .mini3 div.tot{box-shadow:inset 0 2px 0 var(--ink)}
+  @media(max-width:560px){ .hbar .path small{display:none} .avg span{display:none} }
+  .calls{display:grid; gap:22px; align-items:center}
+  @media(min-width:860px){ .calls{grid-template-columns:1fr 1.1fr 1.4fr} }
+  .calls .big{font-size:clamp(46px,7vw,68px); font-weight:700; line-height:.95; letter-spacing:-.03em}
+  .calls .label{color:var(--muted); font-size:14px; margin-top:10px}
+  .calls .months{height:150px; padding-top:22px}
+  .calls .sub-h{font-size:12px; color:var(--muted); margin-bottom:12px}
+  .phone-ico{display:inline-grid; place-content:center; width:30px; height:30px; border-radius:8px; background:var(--amber-dim); color:var(--amber); margin-bottom:12px}
+  .phone-ico svg{width:17px; height:17px}
+  .foot{margin-top:28px; color:var(--faint); font-size:12.5px; text-align:center; line-height:1.6}
+  .foot b{color:var(--amber)}
+  .back{display:inline-flex; align-items:center; gap:8px; margin-bottom:18px; padding:10px 16px; border:1px solid rgba(246,178,61,.55); border-radius:8px; color:var(--amber-bright); font-weight:600; font-size:15px; text-decoration:none}
+  .back:hover,.back:focus-visible{background:var(--amber-dim)}
+  /* month switching */
+  .picker{display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-top:20px}
+  .picker-l{font-size:12px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--muted)}
+  .mseg{display:inline-flex; border:1px solid var(--line); border-radius:9px; padding:3px; background:var(--panel)}
+  .mpick{font:inherit; color:inherit; background:none; border:0; cursor:pointer; padding:0}
+  .mpick.seg-b{padding:8px 14px; border-radius:6px; font-size:14px; font-weight:600; color:var(--muted)}
+  .mpick.seg-b.on{background:var(--amber); color:#1a1507}
+  .mpick:focus-visible{outline:2px solid var(--amber-bright); outline-offset:2px}
+  .mpick.ax, .mpick.lg{font-size:inherit; color:inherit}
+  .mpick.ax.on, .mpick.lg.on{color:var(--amber-bright); font-weight:600}
+  .mcol.mpick{border-radius:8px}
+  .mcol.mpick .b{opacity:.55; transition:opacity .2s}
+  .mcol.mpick:hover .b{opacity:.8}
+  .mcol.mpick.on .b{opacity:1; box-shadow:0 0 0 2px var(--amber-bright)}
+  .mcol.mpick .m{border-bottom:2px solid transparent; padding-bottom:3px}
+  .mcol.mpick.on .m{color:var(--amber-bright); font-weight:600; border-bottom-color:var(--amber-bright)}
+  .allmode .mcol.mpick .b{opacity:1}
+  .bar.off{opacity:.18} .bar.wkend.off{opacity:.1}
+  .mini3 div.off{opacity:.35}
+  .rate div.on .rn{color:var(--amber-bright)} .rate div.on .rl{color:var(--amber-bright)}
+  .kt.off{opacity:.45} .kt.on span:first-child{color:var(--amber-bright); font-weight:600}
+  .hint{font-size:10px; letter-spacing:.1em; color:var(--faint); font-weight:500}
+  @media(max-width:560px){ .picker-l{display:none} .mseg{display:grid; grid-template-columns:repeat(4,auto); width:100%} .mpick.seg-b{padding:8px 4px; font-size:12.5px} .hint{display:none} }
+  .live{display:flex; flex-direction:column; align-items:flex-end; gap:3px; font-size:13px; color:var(--muted); text-align:right}
+  .live .ind{display:inline-flex; align-items:center; gap:8px; color:var(--amber-bright); font-weight:600}
+  .live .dot{width:8px; height:8px; border-radius:50%; background:var(--amber); animation:pulse 2.4s ease-out infinite}
+  .eyebrow-top{margin:-4px 0 16px}
+  .card h2.h2-stack{flex-direction:column; justify-content:flex-start; gap:4px}
+  .hero .label.avg3{color:var(--ink)}
+  .colist{list-style:none; margin:0; padding:0}
+  .colist li{display:flex; align-items:center; justify-content:space-between; gap:14px; padding:12px 0; border-top:1px solid var(--line); flex-wrap:wrap}
+  .colist li:first-child{border-top:0; padding-top:2px}
+  .co-n{font-weight:600; color:var(--ink); font-size:15px}
+  .co-w{display:flex; flex-direction:column; gap:3px}
+  .co-d{color:var(--muted); font-size:13px}
+  .co-p{display:flex; gap:8px; flex-wrap:wrap}
+  .co-p span{font-size:12.5px; color:var(--amber-bright); border:1px solid rgba(246,178,61,.45); border-radius:6px; padding:4px 9px; white-space:nowrap}
+  .card h2 .co-tag{color:var(--amber); font-size:12px; letter-spacing:.08em; text-transform:none; font-weight:600}
+  @media(max-width:560px){ .card h2 .co-tag{display:inline} .card.co h2{flex-direction:column; gap:6px} .colist li{flex-direction:column; align-items:flex-start; gap:8px} }
+  .live .clock{color:var(--ink); font-size:12.5px; font-variant-numeric:tabular-nums}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(246,178,61,.55)}70%{box-shadow:0 0 0 7px rgba(246,178,61,0)}100%{box-shadow:0 0 0 0 rgba(246,178,61,0)}}
+  @media(max-width:560px){ .live{align-items:flex-start; text-align:left} }
+  @media(prefers-reduced-motion:reduce){ .live .dot{animation:none} }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <a class="back" id="back" href="/">&larr; Back to the website</a>
+  <script>(function(){try{var q=new URLSearchParams(location.search),b=document.getElementById("back"),code=q.get("p");
+    if(q.get("from")==="proposal"){b.href="/proposal/"+(code?"?p="+encodeURIComponent(code):"")+"#seo";b.innerHTML="&larr; Back to your proposal";}
+    else if(code){b.href="/?p="+encodeURIComponent(code);}}catch(e){}})();</script>
+  <div class="eyebrow eyebrow-top">Results Dashboard · example</div>
+  <div class="top">
+    <div>
+      <div class="launched">Launched by AI Rocket</div>
+      <h1>JM Electrical Solutions</h1>
+      <div class="sub">Website visitors · last 3 months</div>
+    </div>
+    <div class="live"><span class="clock" id="clock"></span></div>
+  </div>
+
+
+  <div class="picker" role="group" aria-label="Pick a month"><span class="mseg" id="picker"></span></div>
+
+  <div class="grid">
+    <!-- headline numbers -->
+    <div class="row four" id="heroes"></div>
+
+    <div class="row wide">
+      <section class="card"><h2>Visitors by month <span class="hint">Tap a month</span></h2><div id="months"></div></section>
+      <section class="card"><h2>Daily visitors · 92 days</h2><div id="daily"></div></section>
+    </div>
+
+    <div class="row split">
+      <section class="card"><h2><span>Most visited pages · <span class="mlc">October</span></span></h2><div id="pages"></div></section>
+      <section class="card"><h2><span>Devices · <span class="mlc">October</span></span></h2><div id="devices"></div></section>
+    </div>
+
+    <section class="card"><h2>Calls from the website · taps on the phone number</h2><div id="calls"></div></section>
+
+    <div class="row split">
+      <section class="card"><h2>Quote &amp; contact page visits by month</h2><div id="keybars"></div></section>
+      <section class="card"><h2><span>Quote &amp; contact page visits · <span class="mlc">October</span></span></h2><div id="keydonut"></div></section>
+    </div>
+
+    <section class="card"><h2><span>At a glance · <span class="mlc">October</span></span></h2><ul class="glance" id="glance"></ul></section>
+  </div>
+
+  <div class="foot">
+    <span class="pwr">Powered by AI Rocket</span><br>Example page for illustration only · Private owner view · Not linked from the public site<br>
+    Days are counted in UTC (they roll over at 7 or 8 pm Boston time).
+  </div>
+</main>
+
+<script>
+(function(){
+  /* ===== SAMPLE DATA — invented for illustration, not real visits ===== */
+  var MONTHS = [
+    {name:"August",    lc:"August",    tiny:"Aug", visitors:412, start:0,  days:31},
+    {name:"September", lc:"September", tiny:"Sep", visitors:538, start:31, days:30},
+    {name:"October",   lc:"October",   tiny:"Oct", visitors:701, start:61, days:31}
+  ];
+  // Daily visitors over the 3 months (weekends a little lower). Sums match the monthly totals.
+  var DAILY = [9,10,14,12,13,13,12,11,10,14,12,12,14,16,10,11,15,17,15,14,17,11,14,14,14,14,15,17,12,13,17,17,17,15,16,13,15,18,17,18,19,17,16,16,17,19,19,21,21,15,18,17,19,22,18,20,14,18,22,21,23,21,23,18,18,22,24,25,22,24,16,20,24,27,26,22,23,21,17,24,22,22,22,27,18,19,25,29,23,26,27,24];
+  var START = Date.UTC(2026,7,1); // only used to place weekends
+  var PAGES = [ // page views by month [Aug, Sep, Oct]; real page names and paths on the JM site
+    {name:"Home", path:"/", m:[351,458,596]},
+    {name:"Panel Upgrades", path:"/panel-upgrades.html", m:[118,156,212]},
+    {name:"EV Charger Installation", path:"/ev-chargers.html", m:[96,131,183]},
+    {name:"Reviews", path:"/reviews.html", m:[84,109,142]},
+    {name:"Contact", path:"/contact.html", m:[48,71,105]},
+    {name:"Lighting &amp; Ceiling Fans", path:"/lighting-ceiling-fans.html", m:[61,80,98]},
+    {name:"Outlets &amp; Switches", path:"/outlets-switches.html", m:[44,57,71]}
+  ];
+  var DEVICES = [ // visitors by month; each month adds up to that month's visitors (about 66% / 28% / 6%)
+    {name:"Phone",    m:[272,355,463], color:"#f6b23d"},
+    {name:"Computer", m:[115,151,196], color:"#c98a2a"},
+    {name:"Tablet",   m:[25,32,42],    color:"#5c5148"}
+  ];
+  var KEY = [ // [Aug, Sep, Oct]; about 15 / 17 / 20 per 100 visitors
+    {name:"Contact page", path:"/contact.html", m:[48,71,105]},
+    {name:"Quote requests sent (thank-you page)", path:"/thank-you.html", m:[14,22,35]}
+  ];
+  var CALLS = { m:[41,58,84], // taps on (978) 746-1993, by month
+    where:[
+      {name:"Call bar at the bottom of phone screens", m:[20,28,41]},
+      {name:"“(978) 746-1993” button in the header", m:[11,16,23]},
+      {name:"Big number at the top of the home and service pages", m:[6,9,13]},
+      {name:"Phone number in the footer and on the Contact page", m:[4,5,7]}
+    ]};
+  /* ===================================================================== */
+
+  var $ = function(id){ return document.getElementById(id); };
+  var nf = function(n){ return n.toLocaleString("en-US"); };
+  var pct = function(a,b){ return Math.round((b-a)/a*100); };
+  var sum = function(a){ return a.reduce(function(t,x){return t+x;},0); };
+  var shades = ["var(--a1)","var(--a2)","var(--a3)"];
+  var mxD = Math.max.apply(null,DAILY), tot3 = sum(DAILY);
+  var keyBy = [0,1,2].map(function(i){return sum(KEY.map(function(k){return k.m[i];}));});
+  var rates = [0,1,2].map(function(i){return Math.round(keyBy[i]/MONTHS[i].visitors*100);});
+  var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // month switch (also every month label on the page)
+  function mbtn(i, sel, text, cls){ return '<button type="button" class="mpick '+(cls||'')+(i===sel?' on':'')+'" data-m="'+i+'" aria-pressed="'+(i===sel)+'">'+text+'</button>'; }
+  function vsPrev(i, a, b){ // growth line vs the month before
+    if(i===0) return '<span class="delta base">First of the 3 months</span>';
+    return '<span class="delta">▲ '+pct(a,b)+'% vs '+(i===2?'September':'August')+'</span>';
+  }
+  function spark(arr, from, len){ return '<div class="bars spark'+(arr.length>31?' tall':'')+'" aria-hidden="true">'+arr.map(function(v,j){var out=from!=null&&(j<from||j>=from+len);return '<div class="bar'+(out?' off':'')+'" style="--h:'+Math.max(6,Math.round(v/mxD*100))+'%"></div>';}).join("")+'</div>'; }
+  function donut(items, centerN, centerL){
+    var total = sum(items.map(function(d){return d.count;})), acc=0;
+    var stops = items.map(function(d){ var f=acc/total*100; acc+=d.count; return d.color+" "+f+"% "+(acc/total*100)+"%"; });
+    var legend = items.map(function(d){
+      return '<div class="li"><span class="dot" style="background:'+d.color+'"></span>'+d.name+'<span class="lv num">'+nf(d.count)+'</span><span class="pct num">'+Math.round(d.count/total*100)+'%</span></div>';
+    }).join("");
+    return '<div class="donut-wrap"><div class="donut" style="background:conic-gradient('+stops.join(",")+')"><div class="center"><div class="n num">'+centerN+'</div><div class="l">'+centerL+'</div></div></div><div class="legend">'+legend+'</div></div>';
+  }
+
+  var ALLM = {name:"All 3 months", lc:"all 3 months", visitors:tot3, start:0, days:DAILY.length};
+  function render(sel){
+    var all = sel===3, M = all ? ALLM : MONTHS[sel], md = DAILY.slice(M.start, M.start+M.days);
+    document.querySelectorAll(".mlc").forEach(function(el){ el.textContent = M.lc; });
+    $("picker").innerHTML = MONTHS.concat([ALLM]).map(function(m,i){return mbtn(i,sel,m.name,'seg-b');}).join("");
+    var V = function(arr){ return all ? sum(arr) : arr[sel]; };
+    var G = function(arr){ return all ? '<span class="delta">▲ '+pct(arr[0],arr[2])+'% over 3 months</span>' : sel ? vsPrev(sel,arr[sel-1],arr[sel]) : vsPrev(0); };
+    var when = all ? 'over the 3 months' : 'in '+M.name;
+    var dim = function(i){ return !all && i!==sel; };
+    document.querySelector('.grid').classList.toggle('allmode', all);
+
+    // headline numbers
+    $("heroes").innerHTML =
+      '<section class="card hero current"><h2>Visitors · '+M.lc+'</h2><div class="big num" data-count="'+M.visitors+'">'+nf(M.visitors)+'</div>'+
+        '<div class="label">'+G(MONTHS.map(function(m){return m.visitors;}))+'</div><div class="label" style="margin-top:2px">'+Math.round(M.visitors/M.days)+' a day</div>'+
+        '<div class="spark">'+spark(md)+'</div></section>'+
+      (all ? '<section class="card hero"><h2>Visitors · October</h2><div class="big num" data-count="'+MONTHS[2].visitors+'">'+nf(MONTHS[2].visitors)+'</div>'+
+        '<div class="label">'+vsPrev(2,MONTHS[1].visitors,MONTHS[2].visitors)+'</div><div class="label" style="margin-top:2px">'+Math.round(MONTHS[2].visitors/MONTHS[2].days)+' a day · the latest month</div>'+
+        '<div class="spark">'+spark(DAILY, MONTHS[2].start, MONTHS[2].days)+'</div></section>' :
+      '<section class="card hero"><h2>Visitors · 3 months</h2><div class="big num" data-count="'+tot3+'">'+nf(tot3)+'</div>'+
+        '<div class="label"><span class="delta">▲ '+pct(MONTHS[0].visitors,MONTHS[2].visitors)+'% over 3 months</span></div><div class="label" style="margin-top:2px">'+Math.round(tot3/DAILY.length)+' a day · '+M.lc+' highlighted</div>'+
+        '<div class="spark">'+spark(DAILY, M.start, M.days)+'</div></section>')+
+      '<section class="card hero"><h2>Quote &amp; contact page visits · '+M.lc+'</h2><div class="big num" data-count="'+V(keyBy)+'">'+nf(V(keyBy))+'</div>'+
+        '<div class="label">'+G(keyBy)+'</div><div class="label" style="margin-top:2px">Contact page and quote requests sent</div>'+
+        '<div class="spark">'+(function(){ var k4=keyBy.concat([sum(keyBy)]), mx=k4[3];
+          return '<div class="mini3 mini4" aria-hidden="true">'+k4.map(function(v,i){var off=i<3?dim(i):!all;return '<div class="'+(off?'off':'')+(i===3?' tot':'')+'" style="--h:'+Math.max(4,Math.round(v/mx*100))+'%;--c:'+(i<3?shades[i]:'var(--amber-bright)')+'"></div>';}).join("")+'</div>'+
+          '<div class="mini4-l" aria-hidden="true">'+MONTHS.map(function(m,i){return '<span class="'+(dim(i)?'off':'')+'">'+m.name.slice(0,3)+' '+k4[i]+'</span>';}).join("")+'<span class="'+(all?'':'off')+'">All 3 · '+k4[3]+'</span></div>'; })()+'</div></section>'+
+      // quote & contact page visits per 100 visitors
+      (function(){ var rAll=Math.round(sum(keyBy)/tot3*100), rv=all?rAll:rates[sel];
+        var g = all ? '<span class="delta">▲ From '+rates[0]+' in August to '+rates[2]+' in October</span>' : sel ? '<span class="delta">▲ '+(rates[sel]-rates[sel-1])+' more per 100 than '+MONTHS[sel-1].name+'</span>' : vsPrev(0);
+        return '<section class="card hero"><h2 class="h2-stack"><span>People who looked at a page that can bring a job</span><span>'+M.lc+'</span></h2><div class="big num" data-count="'+rv+'">'+rv+'</div>'+
+        '<div class="label">'+g+'</div>'+(all?'<div class="label avg3">Average over the 3 months</div>':'')+'<div class="label">Out of every 100 people who visited the site, '+rv+' looked at the Contact page or sent a quote request.</div>'+
+        '<div class="spark"><div class="mini3" aria-hidden="true">'+rates.map(function(v,i){return '<div class="'+(dim(i)?'off':'')+'" style="--h:'+Math.round(v/rates[2]*100)+'%;--c:'+shades[i]+'"></div>';}).join("")+'</div></div></section>'; })();
+
+    // visitors by month
+    var mmax = Math.max.apply(null, MONTHS.map(function(m){return m.visitors;}));
+    $("months").innerHTML = '<div class="months">'+MONTHS.map(function(m,i){
+      return '<div role="button" tabindex="0" class="mcol mpick'+(i===sel?' on':'')+'" data-m="'+i+'" aria-pressed="'+(i===sel)+'"><div class="v num">'+nf(m.visitors)+'</div><div class="b" style="--h:'+Math.round(m.visitors/mmax*100)+'%;--c:'+shades[i]+'"></div><div class="m">'+m.name+'</div></div>';
+    }).join("")+'</div><div class="rate-h">Quote &amp; contact page visits per 100 visitors</div><div class="rate">'+rates.map(function(v,i){return '<div class="'+(i===sel?'on':'')+'"><div class="rn num">'+v+'</div><div class="rl">'+MONTHS[i].name+'</div></div>';}).join("")+'</div>';
+
+    // daily chart
+    var bars = DAILY.map(function(v,i){
+      var wd = new Date(START + i*864e5).getUTCDay(), ago = DAILY.length-1-i;
+      var label = ago===0?"Today":ago===1?"Yesterday":ago+" days ago";
+      var out = i<M.start || i>=M.start+M.days;
+      return '<div class="bar'+(wd===0||wd===6?' wkend':'')+(out?' off':'')+'" style="--h:'+Math.max(2,Math.round(v/mxD*100))+'%" title="'+label+': '+v+' visitors"></div>';
+    }).join("");
+    $("daily").innerHTML = '<div class="chart-key"><span><i></i>'+M.name+' average: '+Math.round(sum(md)/M.days)+' a day</span></div><div class="bars" role="img" aria-label="Daily visitors, '+M.lc+' highlighted">'+bars+
+      '<div class="seg" style="left:'+(M.start/DAILY.length*100)+'%;width:'+(M.days/DAILY.length*100)+'%;bottom:'+(sum(md)/M.days/mxD*100)+'%"></div></div>'+
+      '<div class="axis">'+MONTHS.map(function(m,i){return '<span style="--f:'+m.days+'">'+mbtn(i,sel,m.name,'ax')+'</span>';}).join("")+'</div>'+
+      '<div class="note">Faded bars are weekends.</div>';
+
+    // top pages for the month
+    var pg = PAGES.map(function(p){return {name:p.name, path:p.path, count:V(p.m)};}).sort(function(a,b){return b.count-a.count;});
+    $("pages").innerHTML = '<div class="hbars">'+pg.map(function(p){
+      return '<div class="hbar"><div class="meta"><span class="path">'+p.name+'<small class="mono">'+p.path+'</small></span><span class="val num">'+nf(p.count)+'</span></div><div class="track"><div class="fill" style="--w:'+Math.round(p.count/pg[0].count*100)+'%"></div></div></div>';
+    }).join("")+'</div><div class="note">Page views '+when+', most visited first.</div>';
+
+    // devices for the month
+    var dv = DEVICES.map(function(d){return {name:d.name, count:V(d.m), color:d.color};});
+    $("devices").innerHTML = donut(dv, nf(M.visitors), "visitors") + '<div class="note">Mostly phones: homeowners usually look up an electrician on their phone.</div>';
+
+    // calls
+    var cmax=Math.max.apply(null,CALLS.m), wh=CALLS.where.map(function(w){return {name:w.name,count:V(w.m)};}), wmax=wh[0].count;
+    $("calls").innerHTML = '<div class="calls">'+
+      '<div><div class="phone-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></div>'+
+        '<div class="big num" data-count="'+V(CALLS.m)+'">'+V(CALLS.m)+'</div><div class="label">calls started '+when+'</div>'+
+        '<div class="label" style="margin-top:4px">'+G(CALLS.m)+'</div>'+
+        '<div class="label" style="margin-top:4px">'+sum(CALLS.m)+' in 3 months · '+Math.round(V(CALLS.m)/(M.days/7))+' a week '+(all?'on average':'in '+M.name)+'</div></div>'+
+      '<div><div class="sub-h">Calls by month</div><div class="months">'+CALLS.m.map(function(v,i){return '<div role="button" tabindex="0" class="mcol mpick'+(i===sel?' on':'')+'" data-m="'+i+'" aria-pressed="'+(i===sel)+'"><div class="v num">'+v+'</div><div class="b" style="--h:'+Math.round(v/cmax*100)+'%;--c:'+shades[i]+'"></div><div class="m">'+MONTHS[i].name+'</div></div>';}).join("")+'</div></div>'+
+      '<div><div class="sub-h">Where they tapped · '+M.lc+'</div><div class="hbars">'+wh.map(function(w){return '<div class="hbar"><div class="meta"><span class="path" style="white-space:normal">'+w.name+'</span><span class="val num">'+w.count+'</span></div><div class="track"><div class="fill" style="--w:'+Math.round(w.count/wmax*100)+'%"></div></div></div>';}).join("")+'</div>'+
+      '<div class="note">Counts taps on (978) 746-1993. A tap opens the phone’s dialer; it doesn’t prove the call connected.</div></div>'+
+    '</div>';
+
+    // quote & contact page visits by month
+    var kmax = Math.max.apply(null, KEY.map(function(k){return Math.max.apply(null,k.m);}));
+    $("keybars").innerHTML = '<div class="keylegend">'+MONTHS.map(function(m,i){return '<span><i style="background:'+shades[i]+'"></i>'+mbtn(i,sel,m.name,'lg')+'</span>';}).join("")+'</div>'+
+      '<div class="kgroup">'+KEY.map(function(k){
+        return '<div class="krow"><div class="meta"><span>'+k.name+'</span><span class="up">▲ '+pct(k.m[0],k.m[2])+'% in 3 months</span></div><div class="ktracks">'+
+          k.m.map(function(v,i){return '<div class="kt m'+(i+1)+(all?'':i===sel?' on':' off')+'"><span>'+MONTHS[i].tiny+'</span><div class="track"><div class="fill" style="--w:'+Math.max(3,Math.round(v/kmax*100))+'%"></div></div><span class="n num">'+v+'</span></div>';}).join("")+
+          '</div></div>';
+      }).join("")+'</div>';
+
+    // key page donut for the month
+    var kcolors = ["#f6b23d","#c98a2a","#ffd27a"];
+    var kd = KEY.map(function(k,i){return {name:k.name, count:V(k.m), color:kcolors[i]};});
+    $("keydonut").innerHTML = donut(kd, nf(V(keyBy)), "visits") +
+      '<div class="note">The Contact page and quote requests together: '+keyBy[0]+' in August → '+keyBy[1]+' in September → '+keyBy[2]+' in October. The quote form is on every page; each request sent opens the thank-you page, so those visits count the requests.</div>';
+
+    // at a glance for the month
+    var wk=[0,0], we=[0,0];
+    md.forEach(function(v,i){var wd=new Date(START+(M.start+i)*864e5).getUTCDay(); if(wd===0||wd===6){we[0]+=v;we[1]++;}else{wk[0]+=v;wk[1]++;}});
+    var prev = sel ? (sel===2?'September':'August') : null;
+    var sys = pg.filter(function(p){return p.path!=="/"&&p.path!=="/reviews.html"&&p.path!=="/contact.html";})[0];
+    $("glance").innerHTML = [
+      ['▲', (all?'The 3 months brought':M.name+' had')+' <b>'+nf(M.visitors)+' visitors</b>, '+Math.round(M.visitors/M.days)+' a day'+(all?', up '+pct(MONTHS[0].visitors,MONTHS[2].visitors)+'% from August to October.':prev?', up '+pct(MONTHS[sel-1].visitors,M.visitors)+'% from '+prev+'.':', the first of the 3 months.')],
+      ['$','<b>'+V(KEY[1].m)+'</b> quote requests sent and <b>'+V(CALLS.m)+'</b> calls from the website'+(all?', growing from '+KEY[1].m[0]+' requests and '+CALLS.m[0]+' calls in August to '+KEY[1].m[2]+' and '+CALLS.m[2]+' in October.':prev?', up from '+KEY[1].m[sel-1]+' requests and '+CALLS.m[sel-1]+' calls in '+prev+'.':'.')],
+      ['★','<b>'+sys.name.replace("&","&amp;")+'</b> was the most visited service page '+when+', right behind Home.'],
+      ['%','<b>'+(all?Math.round(sum(keyBy)/tot3*100):rates[sel])+' per 100 visitors</b> reached the Contact page or sent a quote request. That was '+Math.round(wk[0]/wk[1])+' visitors a weekday and '+Math.round(we[0]/we[1])+' a weekend day.']
+    ].map(function(x){return '<li><span class="ic">'+x[0]+'</span><span>'+x[1]+'</span></li>';}).join("");
+
+    countUp();
+  }
+
+  // count the big numbers up (on load and on each month change)
+  var raf=null;
+  function countUp(){
+    if(reduce) return;
+    var els=[].slice.call(document.querySelectorAll("[data-count]")), t0=null, dur=1100;
+    if(raf) cancelAnimationFrame(raf);
+    els.forEach(function(el){ el.textContent="0"; });
+    var step=function(ts){ if(t0===null)t0=ts; var k=Math.min(1,(ts-t0)/dur), e=1-Math.pow(1-k,3);
+      els.forEach(function(el){ el.textContent=nf(Math.round(+el.getAttribute("data-count")*e)); });
+      raf = k<1 ? requestAnimationFrame(step) : null; };
+    raf=requestAnimationFrame(step);
+  }
+
+  document.addEventListener("keydown", function(e){
+    if((e.key==="Enter"||e.key===" ") && e.target.classList && e.target.classList.contains("mpick") && e.target.tagName!=="BUTTON"){ e.preventDefault(); e.target.click(); }
+  });
+  var cur=2;
+  document.addEventListener("click", function(e){
+    var b = e.target.closest && e.target.closest(".mpick"); if(!b) return;
+    var i = +b.getAttribute("data-m"); if(i===cur) return;
+    cur=i; render(cur);
+  });
+  render(cur);
+
+  // live date and time, viewer's own clock, e.g. "Sat, Nov 7 · 5:59 AM"
+  var clk=$("clock");
+  function tick(){ var d=new Date();
+    clk.textContent = d.toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric"})+" · "+d.toLocaleTimeString("en-US",{hour:"numeric",minute:"2-digit"}); }
+  tick(); setTimeout(function(){ tick(); setInterval(tick,60000); }, 60000-(Date.now()%60000)+50);
+})();
+</script>
+</body>
+</html>

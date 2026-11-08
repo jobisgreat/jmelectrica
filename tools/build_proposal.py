@@ -52,7 +52,8 @@ SITE_PAGES = [
     ("Thank-you page", "/thank-you.html"),
 ]
 PAGES = [n for n, _ in SITE_PAGES]
-PAGE_LIST = f"{len(PAGES)} pages: " + ", ".join(PAGES[:-1]) + " and a " + PAGES[-1][0].lower() + PAGES[-1][1:] + " after the quote form"
+TOTAL_PAGES = len(PAGES) + 1  # the site pages plus the private Results Dashboard (Tim, 8 Nov 2026)
+PAGE_LIST = f"{TOTAL_PAGES} pages: " + ", ".join(PAGES[:-1]) + ", a " + PAGES[-1][0].lower() + PAGES[-1][1:] + " after the quote form and your private Results Dashboard"
 
 # Word for word on the proposal (twice) and the agreement. Change it here only.
 # JM has no Projects page, so the template's "new projects" line became new reviews (29 Oct 2026).
@@ -62,6 +63,7 @@ MONTHLY_SCOPE = [
     "New customer reviews added to your Reviews page when you send them.",
     "A check every month that your quote form still reaches you.",
     "Keyword updates every month: we check what customers search for and what changed in Google's latest updates, then adjust your page titles, descriptions and wording to match.",
+    "A private Results Dashboard on your website: visitors, most visited pages, phone or computer, and quote & contact page visits, updated every few minutes.",
 ]
 
 # Tim's wording style for the chart section's "kept current" column (PH Electric, 28 Oct 2026). Same promises as MONTHLY_SCOPE.
@@ -71,6 +73,7 @@ CHART_KEPT = [
     "New customer reviews added to the Reviews page when you send them.",
     "A monthly check that the quote form still reaches you.",
     "Keyword and wording updates every month. AI scans never stop, so we check what customers are searching for and adjust titles, descriptions, and copy to match.",
+    "Your own Results Dashboard, so you see the numbers any time: visitors, top pages and quote & contact page visits.",
 ]
 
 BUILD_SCOPE = [
@@ -82,6 +85,7 @@ BUILD_SCOPE = [
     "Your logo, your Massachusetts license number (#22667) and 749 Dorchester Ave on every page.",
     "Search setup: a title and description on every page, and business and service details written in code Google reads.",
     "Your quote form connected, so every request reaches your inbox.",
+    "A private Results Dashboard page that only you can open: visitors, most visited pages, phone or computer, and quote & contact page visits.",
     "Every fact on the site confirmed by you. Anything we could not confirm is marked on the preview and stays off the live site until you confirm it.",
     "jmelectricsolutions.com moved off GoDaddy Website Builder onto the new site, with your email left as it is, and Google allowed to list the site from launch day.",
     "Your Google Business Profile checked and cleaned up.",
@@ -90,7 +94,7 @@ BUILD_SCOPE = [
 
 # Short version of BUILD_SCOPE for the price box at the top. Keep it in step with BUILD_SCOPE.
 PRICE_BUILD = [
-    f"The {len(PAGES)}-page website, built from the working preview.",
+    f"The {TOTAL_PAGES}-page website, including your private Results Dashboard, built from the working preview.",
     "A page for each of your eight services, named with Dorchester and Boston.",
     "Your real customer reviews on the home page and a Reviews page.",
     f"Tap-to-call {PHONE_JM} on every page, plus a call bar on phones.",
@@ -267,6 +271,9 @@ dl.terms dt { font-weight: 700; } dl.terms dd { margin: 2px 0 0; color: var(--mu
 .keep { margin: 22px 0 0; max-width: 46rem; } .keep p { margin: 0; font-weight: 700; }
 .keep ul { margin: 6px 0 0; padding-left: 20px; } .keep li { margin: 4px 0; }
 .proof { margin: 16px 0 0; max-width: 46rem; }
+.dash { margin-top: 34px; }
+.dash .lead { max-width: 46rem; }
+.dash .dashhead { color: #f5c04a; font-size: clamp(26px, 3.4vw, 38px); line-height: 1.15; max-width: none; border-left: 8px solid #f5c04a; padding: 4px 0 4px 18px; margin-bottom: 18px; }
 .seochart{margin-top:28px;background:var(--ink);color:var(--onink);border-top:4px solid var(--gold);padding:16px;}
 .seohead{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px 16px}
 .seotitle{font-family:var(--display);font-weight:800;font-size:23px;color:#f0b13c;margin:0}
@@ -468,7 +475,7 @@ def proposal():
         f'        <li><p class="t">{html.escape(t)}</p><p class="p"><span class="x" aria-label="Gap">✕</span>{html.escape(p)}</p><p><span class="ok" aria-label="Solution">✓</span>{html.escape(s)}</p></li>'
         for i, (t, p, s) in enumerate(GAPS, 1))
     page_links = "\n".join(f'          <li><a href="{SITE}{s}" data-site="{s}" target="_blank" rel="noopener">{html.escape(n)}</a></li>'
-                           for n, s in SITE_PAGES)
+                           for n, s in SITE_PAGES) + f'\n          <li><a href="{SITE}/stats/sample/?from=proposal" data-site="/stats/sample/" target="_blank" rel="noopener">Results Dashboard (example)</a></li>'
     compare = "\n".join(f'            <li><span>{html.escape(a)}</span><span><b>{b}</b> <a href="{u}">({html.escape(c)})</a></span></li>'
                         for a, b, u, c in SOURCES)
     pay = (f'<a class="btn main" id="paylink" href="{DEPOSIT_LINK}" hidden>Pay the {money(DEPOSIT)} deposit</a>'
@@ -511,7 +518,7 @@ def proposal():
       <p class="forge">{forge}</p>
       <p class="tagline">Not a brochure. A website that brings in work.</p>
       <h1>A website built to win you jobs.</h1>
-      <p class="sub">Your new website is built and working now, made from your Google reviews, your own photos and the facts on jmelectricsolutions.com.</p>
+      <p class="sub">Your new website is built and working now, made from your Google reviews, your own photos and the facts on jmelectricsolutions.com. It comes with a private Results Dashboard, so you see who visits and what they look at.</p>
       <figure class="shot">
         <div class="frame"><img src="site-home.jpg" alt="The new JM Electrical Solutions home page on a computer" width="1440" height="900"></div>
         <figcaption>Your new home page, as a homeowner sees it on a computer. {AI_NOTE}</figcaption>
@@ -520,6 +527,7 @@ def proposal():
         <a class="btn main" href="#proposal">See your proposal</a>
         <a class="btn outline" href="{SITE}/?from=proposal" data-site="/">Explore your new website</a>
         <a class="btn outline" href="/preview/" data-prev>See it on a phone and a computer →</a>
+        <a class="btn outline" href="{SITE}/stats/sample/?from=proposal" data-site="/stats/sample/">See the example Results Dashboard →</a>
       </div>
     </div>
   </header>
@@ -539,7 +547,7 @@ def proposal():
       <p class="note">jmelectricsolutions.com, checked {CHECKED}.</p>
       <dl class="summary">
         <div><dt>The gap</dt><dd>People who look you up find a two-page site with almost no services named, none of your 4.9-star reviews, no license number or street address, and a footer dated 2018.</dd></div>
-        <div><dt>The fix</dt><dd>A website built to win you jobs: a {len(PAGES)}-page site for homeowners and businesses around Dorchester and Boston, with a page for each of your eight services, your real customer reviews and a clear way to call or ask for a quote. It is set up to be found on Google: each service on its own page named with Dorchester and Boston, search details on every page, and your Google Business Profile cleaned up. Your monthly plan keeps it current so you keep getting found. You can <a href="{SITE}/?from=proposal" data-site="/">open the working preview</a> now: the eight service pages, the Reviews page and the quote form are already built.</dd></div>
+        <div><dt>The fix</dt><dd>A website built to win you jobs: a {TOTAL_PAGES}-page site, including your Results Dashboard, for homeowners and businesses around Dorchester and Boston, with a page for each of your eight services, your real customer reviews and a clear way to call or ask for a quote. It is set up to be found on Google: each service on its own page named with Dorchester and Boston, search details on every page, and your Google Business Profile cleaned up. Your monthly plan keeps it current so you keep getting found. You can <a href="{SITE}/?from=proposal" data-site="/">open the working preview</a> now: the eight service pages, the Reviews page and the quote form are already built.</dd></div>
         <div class="pricecell"><dt>The price</dt><dd>
           <div class="pcols">
             <div><p><b>{money(BUILD)} website build</b>: {money(DEPOSIT)} deposit at signing, {money(BUILD - DEPOSIT)} at launch. It includes:</p>
@@ -575,7 +583,7 @@ def proposal():
     <section class="alt" data-slide>
       <div class="wrap">
         <p class="eyebrow">Every page of your new site</p>
-        <h2>{len(PAGES)} pages, ready to click through</h2>
+        <h2>{TOTAL_PAGES} pages, ready to click through</h2>
         <p class="lead">Tap any page to open it on the working site. Facts we could not confirm are marked in yellow and stay off the live site until you confirm them.</p>
         <ul class="pages">
 {page_links}
@@ -598,6 +606,15 @@ def proposal():
 {ul(MONTHLY_SCOPE)}
         </ul></div>
         <p class="proof"><b>The proof:</b> we save your Google numbers before the build and compare them at 30, 60 and 90 days after launch.</p>
+        <div class="dash">
+          <p class="syshead dashhead">Every visitor counted. Every page ranked.<br>Every quote request logged.</p>
+          <p class="lead">Your Results Dashboard is a private page on your website that only you can open. It shows how many people visited, which pages they read, whether they used a phone or a computer, and how many reached your Contact page or sent a quote request. It updates every few minutes, with no reports to wait for.</p>
+          <figure class="shot">
+            <div class="frame"><a href="{SITE}/stats/sample/?from=proposal" data-site="/stats/sample/"><img src="results-dashboard.jpg" alt="Example Results Dashboard for JM Electrical Solutions with sample numbers" width="1440" height="892" loading="lazy"></a></div>
+            <figcaption>An example filled with sample numbers, not real visits. Your real dashboard starts counting on launch day. The example also shows phone taps; counting those takes extra tracking on the call buttons.</figcaption>
+          </figure>
+          <div class="btns"><a class="btn outline" href="{SITE}/stats/sample/?from=proposal" data-site="/stats/sample/">Open the example dashboard →</a></div>
+        </div>
         <p class="ghead">Google changes the rules every day. Your site should keep up.</p>
         <ul class="gstats">
           <li><b>4,000+</b><span>improvements Google made to Search in 2023 alone.</span><a href="https://www.google.com/intl/en_us/search/howsearchworks/how-search-works/rigorous-testing/">Google, How Search Works</a></li>
@@ -653,7 +670,7 @@ def proposal():
               <ul>
 {compare}
               </ul>
-              <p class="small">Your build is {money(BUILD)}: inside the freelancer range for a 10-page electrician site and right at the freelancer median for electrician sites, well below agency prices, while your new site has {len(PAGES)} pages. {money(MONTHLY)} a month sits at the top of the hosting-and-maintenance range and covers the hands-on work listed above, including monthly keyword updates. Figures checked {CHECKED}.</p>
+              <p class="small">Your build is {money(BUILD)}: inside the freelancer range for a 10-page electrician site and right at the freelancer median for electrician sites, well below agency prices, while your new site has {TOTAL_PAGES} pages, including your Results Dashboard. {money(MONTHLY)} a month sits at the top of the hosting-and-maintenance range and covers the hands-on work listed above, including monthly keyword updates. Figures checked {CHECKED}.</p>
             </div>
           </div>
           <div>
@@ -841,7 +858,7 @@ def agreement():
     ]
     table = "\n".join(f"<tr><th>{k}</th><td>{v}</td></tr>" for k, v in rows)
     build_text = html.escape(
-        f"a website with {len(PAGES)} pages ({', '.join(PAGES[:-1])} and {PAGES[-1]}), built from the working preview; "
+        f"a website with {TOTAL_PAGES} pages ({', '.join(PAGES)} and a private Results Dashboard), built from the working preview; "
         "each of the eight services on its own page named with Dorchester and Boston (panel upgrades, EV charger installation, lighting and ceiling fans, home rewiring, generators, smart home automation, outlets and switches, and emergency electrical service), with the signs to look for, what the work involves, a typical timeline, what to expect and common questions; "
         "the client's real customer reviews on the home page and a Reviews page; an About page with the client's photo and a Service Areas page; "
         "tap-to-call on every page and a call bar on phones; the client's logo; the Massachusetts license number and street address on every page; "
