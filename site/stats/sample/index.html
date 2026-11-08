@@ -443,13 +443,24 @@
   document.addEventListener("keydown", function(e){
     if((e.key==="Enter"||e.key===" ") && e.target.classList && e.target.classList.contains("mpick") && e.target.tagName!=="BUTTON"){ e.preventDefault(); e.target.click(); }
   });
+  // autoplay: on open, step August -> September -> October -> All 3 months once,
+  // then stay on All 3 months. Any tap or key press stops it. No autoplay for reduced motion.
+  var TOUR=[0,1,2,3], STEP_MS=3000, tourT=null;
+  function stopTour(){ if(tourT){ clearTimeout(tourT); tourT=null; } }
+  function runTour(k){
+    cur=TOUR[k]; render(cur);
+    if(k<TOUR.length-1) tourT=setTimeout(function(){ runTour(k+1); }, STEP_MS); else tourT=null;
+  }
   var cur=2;
+  document.addEventListener("pointerdown", stopTour, true);
+  document.addEventListener("keydown", stopTour, true);
   document.addEventListener("click", function(e){
     var b = e.target.closest && e.target.closest(".mpick"); if(!b) return;
+    stopTour();
     var i = +b.getAttribute("data-m"); if(i===cur) return;
     cur=i; render(cur);
   });
-  render(cur);
+  if(reduce) render(cur); else runTour(0);
 
   // live date and time, viewer's own clock, e.g. "Sat, Nov 7 · 5:59 AM"
   var clk=$("clock");
