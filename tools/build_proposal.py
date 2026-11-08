@@ -337,7 +337,7 @@ dl.terms dt { font-weight: 700; } dl.terms dd { margin: 2px 0 0; color: var(--mu
 .card img.tim { width: 132px; height: 132px; object-fit: cover; box-shadow: 0 0 0 4px var(--accent); }
 .card p { margin: 2px 0; }
 .bar { display: none; }
-@media (max-width: 900px) { dl.summary { grid-template-columns: 1fr 1fr; } .grid3, .two, .sys { grid-template-columns: 1fr; } }
+@media (max-width: 900px) { dl.summary { grid-template-columns: 1fr 1fr; } dl.summary div.nextcell { grid-column: 1 / -1; order: 2; } .grid3, .two, .sys { grid-template-columns: 1fr; } }
 @media (max-width: 640px) {
   table { display: none; } .cards { display: block; }
   dl.summary { grid-template-columns: 1fr; }
@@ -546,7 +546,7 @@ def proposal():
       </ol>
       <p class="note">jmelectricsolutions.com, checked {CHECKED}.</p>
       <dl class="summary">
-        <div><dt>The gap</dt><dd>People who look you up find a two-page site with almost no services named, none of your 4.9-star reviews, no license number or street address, and a footer dated 2018.</dd></div>
+        <div><dt>The gap</dt><dd>People who look you up find a two-page GoDaddy site: Home and Photo Gallery, with a “More” menu that repeats the same two links. The home page names only “a small wiring fix” and smart home automation, so panel upgrades, EV chargers, lighting and rewiring never come up. None of your 4.9-star reviews appear, there is no license number or street address, the quote form asks for an email but not a phone number, and the footer still says © 2018.</dd></div>
         <div><dt>The fix</dt><dd>A website built to win you jobs: a {TOTAL_PAGES}-page site, including your Results Dashboard, for homeowners and businesses around Dorchester and Boston, with a page for each of your eight services, your real customer reviews and a clear way to call or ask for a quote. It is set up to be found on Google: each service on its own page named with Dorchester and Boston, search details on every page, and your Google Business Profile cleaned up. Your monthly plan keeps it current so you keep getting found. You can <a href="{SITE}/?from=proposal" data-site="/">open the working preview</a> now: the eight service pages, the Reviews page and the quote form are already built.</dd></div>
         <div class="pricecell"><dt>The price</dt><dd>
           <div class="pcols">
@@ -561,7 +561,7 @@ def proposal():
             <p class="noguar">Results depend on your market and competition; we don't guarantee rankings, calls or revenue.</p>
             <p>You keep {domain} and your email. No domain fee.</p></div>
           </div></dd></div>
-        <div><dt>Next step</dt><dd><a href="#accept">Sign the agreement and pay the deposit to start.</a></dd></div>
+        <div class="nextcell"><dt>Next step</dt><dd><p>First, let’s sit down and go through the site together. Tell me what you like about it and give me your input, and we’ll see what changes can make it even better.</p><p>When you’re ready, <a href="#accept">sign the agreement and pay the deposit to start</a>.</p></dd></div>
       </dl>
     </div>
   </section>
