@@ -117,6 +117,9 @@ dl.terms dt { font-weight: 700; } dl.terms dd { margin: 2px 0 0; color: var(--mu
 .keep { margin: 22px 0 0; max-width: 46rem; } .keep p { margin: 0; font-weight: 700; }
 .keep ul { margin: 6px 0 0; padding-left: 20px; } .keep li { margin: 4px 0; }
 .proof { margin: 16px 0 0; max-width: 46rem; }
+.dash { margin-top: 34px; }
+.dash .lead { max-width: 46rem; }
+.dash .dashhead { color: #f5c04a; font-size: clamp(26px, 3.4vw, 38px); line-height: 1.15; max-width: none; border-left: 8px solid #f5c04a; padding: 4px 0 4px 18px; margin-bottom: 18px; }
 .seochart{margin-top:28px;background:var(--ink);color:var(--onink);border-top:4px solid var(--gold);padding:16px;}
 .seohead{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px 16px}
 .seotitle{font-family:var(--display);font-weight:800;font-size:23px;color:#f0b13c;margin:0}
@@ -180,7 +183,7 @@ dl.terms dt { font-weight: 700; } dl.terms dd { margin: 2px 0 0; color: var(--mu
 .card img.tim { width: 132px; height: 132px; object-fit: cover; box-shadow: 0 0 0 4px var(--accent); }
 .card p { margin: 2px 0; }
 .bar { display: none; }
-@media (max-width: 900px) { dl.summary { grid-template-columns: 1fr 1fr; } .grid3, .two, .sys { grid-template-columns: 1fr; } }
+@media (max-width: 900px) { dl.summary { grid-template-columns: 1fr 1fr; } dl.summary div.nextcell { grid-column: 1 / -1; order: 2; } .grid3, .two, .sys { grid-template-columns: 1fr; } }
 @media (max-width: 640px) {
   table { display: none; } .cards { display: block; }
   dl.summary { grid-template-columns: 1fr; }
@@ -209,7 +212,7 @@ dl.terms dt { font-weight: 700; } dl.terms dd { margin: 2px 0 0; color: var(--mu
       <p class="forge"><mark class="ph">[To confirm: Forge&#x27;s one-line promise]</mark></p>
       <p class="tagline">Not a brochure. A website that brings in work.</p>
       <h1>A website built to win you jobs.</h1>
-      <p class="sub">Your new website is built and working now, made from your Google reviews, your own photos and the facts on jmelectricsolutions.com.</p>
+      <p class="sub">Your new website is built and working now, made from your Google reviews, your own photos and the facts on jmelectricsolutions.com. It comes with a private Results Dashboard, so you see who visits and what they look at.</p>
       <figure class="shot">
         <div class="frame"><img src="site-home.jpg" alt="The new JM Electrical Solutions home page on a computer" width="1440" height="900"></div>
         <figcaption>Your new home page, as a homeowner sees it on a computer. The photo of your building and vans at the top of the page is AI-made, a stand-in until we have your own photo.</figcaption>
@@ -218,6 +221,7 @@ dl.terms dt { font-weight: 700; } dl.terms dd { margin: 2px 0 0; color: var(--mu
         <a class="btn main" href="#proposal">See your proposal</a>
         <a class="btn outline" href="/?from=proposal" data-site="/">Explore your new website</a>
         <a class="btn outline" href="/preview/" data-prev>See it on a phone and a computer →</a>
+        <a class="btn outline" href="/stats/sample/?from=proposal" data-site="/stats/sample/">See the example Results Dashboard →</a>
       </div>
     </div>
   </header>
@@ -248,13 +252,13 @@ dl.terms dt { font-weight: 700; } dl.terms dd { margin: 2px 0 0; color: var(--mu
       </ol>
       <p class="note">jmelectricsolutions.com, checked 29 Oct 2026.</p>
       <dl class="summary">
-        <div><dt>The gap</dt><dd>People who look you up find a two-page site with almost no services named, none of your 4.9-star reviews, no license number or street address, and a footer dated 2018.</dd></div>
-        <div><dt>The fix</dt><dd>A website built to win you jobs: a 15-page site for homeowners and businesses around Dorchester and Boston, with a page for each of your eight services, your real customer reviews and a clear way to call or ask for a quote. It is set up to be found on Google: each service on its own page named with Dorchester and Boston, search details on every page, and your Google Business Profile cleaned up. Your monthly plan keeps it current so you keep getting found. You can <a href="/?from=proposal" data-site="/">open the working preview</a> now: the eight service pages, the Reviews page and the quote form are already built.</dd></div>
+        <div><dt>The gap</dt><dd>People who look you up find a two-page GoDaddy site: Home and Photo Gallery, with a “More” menu that repeats the same two links. The home page names only “a small wiring fix” and smart home automation, so panel upgrades, EV chargers, lighting and rewiring never come up. None of your 4.9-star reviews appear, there is no license number or street address, the quote form asks for an email but not a phone number, and the footer still says © 2018.</dd></div>
+        <div><dt>The fix</dt><dd>A website built to win you jobs: a 16-page site, including your Results Dashboard, for homeowners and businesses around Dorchester and Boston, with a page for each of your eight services, your real customer reviews and a clear way to call or ask for a quote. It is set up to be found on Google: each service on its own page named with Dorchester and Boston, search details on every page, and your Google Business Profile cleaned up. Your monthly plan keeps it current so you keep getting found. You can <a href="/?from=proposal" data-site="/">open the working preview</a> now: the eight service pages, the Reviews page and the quote form are already built.</dd></div>
         <div class="pricecell"><dt>The price</dt><dd>
           <div class="pcols">
             <div><p><b>$3,500 website build</b>: $1,750 deposit at signing, $1,750 at launch. It includes:</p>
             <ul>
-            <li>The 15-page website, built from the working preview.</li>
+            <li>The 16-page website, including your private Results Dashboard, built from the working preview.</li>
             <li>A page for each of your eight services, named with Dorchester and Boston.</li>
             <li>Your real customer reviews on the home page and a Reviews page.</li>
             <li>Tap-to-call (978) 746-1993 on every page, plus a call bar on phones.</li>
@@ -271,11 +275,12 @@ dl.terms dt { font-weight: 700; } dl.terms dd { margin: 2px 0 0; color: var(--mu
             <li>New customer reviews added to your Reviews page when you send them.</li>
             <li>A check every month that your quote form still reaches you.</li>
             <li>Keyword updates every month: we check what customers search for and what changed in Google&#x27;s latest updates, then adjust your page titles, descriptions and wording to match.</li>
+            <li>A private Results Dashboard on your website: visitors, most visited pages, phone or computer, and quote &amp; contact page visits, updated every few minutes.</li>
             </ul>
             <p class="noguar">Results depend on your market and competition; we don't guarantee rankings, calls or revenue.</p>
             <p>You keep jmelectricsolutions.com and your email. No domain fee.</p></div>
           </div></dd></div>
-        <div><dt>Next step</dt><dd><a href="#accept">Sign the agreement and pay the deposit to start.</a></dd></div>
+        <div class="nextcell"><dt>Next step</dt><dd><p>First, let’s sit down and go through the site together. Tell me what you like about it and give me your input, and we’ll see what changes can make it even better.</p><p>When you’re ready, <a href="#accept">sign the agreement and pay the deposit to start</a>.</p></dd></div>
       </dl>
     </div>
   </section>
@@ -297,7 +302,7 @@ dl.terms dt { font-weight: 700; } dl.terms dd { margin: 2px 0 0; color: var(--mu
     <section class="alt" data-slide>
       <div class="wrap">
         <p class="eyebrow">Every page of your new site</p>
-        <h2>15 pages, ready to click through</h2>
+        <h2>16 pages, ready to click through</h2>
         <p class="lead">Tap any page to open it on the working site. Facts we could not confirm are marked in yellow and stay off the live site until you confirm them.</p>
         <ul class="pages">
           <li><a href="/" data-site="/" target="_blank" rel="noopener">Home</a></li>
@@ -315,6 +320,7 @@ dl.terms dt { font-weight: 700; } dl.terms dd { margin: 2px 0 0; color: var(--mu
           <li><a href="/service-areas.html" data-site="/service-areas.html" target="_blank" rel="noopener">Service Areas</a></li>
           <li><a href="/contact.html" data-site="/contact.html" target="_blank" rel="noopener">Contact</a></li>
           <li><a href="/thank-you.html" data-site="/thank-you.html" target="_blank" rel="noopener">Thank-you page</a></li>
+          <li><a href="/stats/sample/?from=proposal" data-site="/stats/sample/" target="_blank" rel="noopener">Results Dashboard (example)</a></li>
         </ul>
       </div>
     </section>
@@ -327,7 +333,7 @@ dl.terms dt { font-weight: 700; } dl.terms dd { margin: 2px 0 0; color: var(--mu
         <p class="syshead">Your system, from search to phone call</p>
         <ul class="sys">
           <li><b>Found.</b>Homeowners and businesses searching for an electrician in Dorchester, South Boston and nearby Boston neighborhoods land on JM Electrical Solutions. Your Google listing is checked and cleaned up, and each of your eight services has its own page named with Dorchester and Boston, written with the title, description and business details those customers and AI search tools look for when they need that specific job done.</li>
-          <li><b>Shown.</b>15 pages: Home, Services, Panel Upgrades, EV Charger Installation, Lighting &amp; Ceiling Fans, Home Rewiring, Generators, Smart Home Automation, Outlets &amp; Switches, Emergency Electrical Service, Reviews, About, Service Areas, Contact and a thank-you page after the quote form.</li>
+          <li><b>Shown.</b>16 pages: Home, Services, Panel Upgrades, EV Charger Installation, Lighting &amp; Ceiling Fans, Home Rewiring, Generators, Smart Home Automation, Outlets &amp; Switches, Emergency Electrical Service, Reviews, About, Service Areas, Contact, a thank-you page after the quote form and your private Results Dashboard.</li>
           <li><b>Contacted.</b>When a customer is ready, they can reach you from any page. On a phone, one tap calls (978) 746-1993, and the call bar stays on screen. The quote form on every page asks for their name, phone number and the job, and lands in your inbox.</li>
         </ul>
         <div class="keep"><p>Every month we keep it working:</p><ul>
@@ -336,8 +342,18 @@ dl.terms dt { font-weight: 700; } dl.terms dd { margin: 2px 0 0; color: var(--mu
             <li>New customer reviews added to your Reviews page when you send them.</li>
             <li>A check every month that your quote form still reaches you.</li>
             <li>Keyword updates every month: we check what customers search for and what changed in Google&#x27;s latest updates, then adjust your page titles, descriptions and wording to match.</li>
+            <li>A private Results Dashboard on your website: visitors, most visited pages, phone or computer, and quote &amp; contact page visits, updated every few minutes.</li>
         </ul></div>
         <p class="proof"><b>The proof:</b> we save your Google numbers before the build and compare them at 30, 60 and 90 days after launch.</p>
+        <div class="dash">
+          <p class="syshead dashhead">Every visitor counted. Every page ranked.<br>Every quote request logged.</p>
+          <p class="lead">Your Results Dashboard is a private page on your website that only you can open. It shows how many people visited, which pages they read, whether they used a phone or a computer, and how many reached your Contact page or sent a quote request. It updates every few minutes, with no reports to wait for.</p>
+          <figure class="shot">
+            <div class="frame"><a href="/stats/sample/?from=proposal" data-site="/stats/sample/"><img src="results-dashboard.jpg" alt="Example Results Dashboard for JM Electrical Solutions with sample numbers" width="1440" height="892" loading="lazy"></a></div>
+            <figcaption>An example filled with sample numbers, not real visits. Your real dashboard starts counting on launch day. The example also shows phone taps; counting those takes extra tracking on the call buttons.</figcaption>
+          </figure>
+          <div class="btns"><a class="btn outline" href="/stats/sample/?from=proposal" data-site="/stats/sample/">Open the example dashboard →</a></div>
+        </div>
         <p class="ghead">Google changes the rules every day. Your site should keep up.</p>
         <ul class="gstats">
           <li><b>4,000+</b><span>improvements Google made to Search in 2023 alone.</span><a href="https://www.google.com/intl/en_us/search/howsearchworks/how-search-works/rigorous-testing/">Google, How Search Works</a></li>
@@ -395,6 +411,7 @@ dl.terms dt { font-weight: 700; } dl.terms dd { margin: 2px 0 0; color: var(--mu
             <li><span aria-hidden="true">✓ </span>New customer reviews added to the Reviews page when you send them.</li>
             <li><span aria-hidden="true">✓ </span>A monthly check that the quote form still reaches you.</li>
             <li><span aria-hidden="true">✓ </span>Keyword and wording updates every month. AI scans never stop, so we check what customers are searching for and adjust titles, descriptions, and copy to match.</li>
+            <li><span aria-hidden="true">✓ </span>Your own Results Dashboard, so you see the numbers any time: visitors, top pages and quote &amp; contact page visits.</li>
           </ul></div>
         </div>
         <p class="seoclose">The build gets you a great site on launch day. The monthly plan is what keeps it working.</p>
@@ -412,7 +429,7 @@ dl.terms dt { font-weight: 700; } dl.terms dd { margin: 2px 0 0; color: var(--mu
             <p>Website build</p>
             <p class="small">$1,750 deposit at signing, $1,750 at launch</p>
             <ul>
-            <li>Your new website, built from the working preview, with every fix in the table above: 15 pages: Home, Services, Panel Upgrades, EV Charger Installation, Lighting &amp; Ceiling Fans, Home Rewiring, Generators, Smart Home Automation, Outlets &amp; Switches, Emergency Electrical Service, Reviews, About, Service Areas, Contact and a thank-you page after the quote form.</li>
+            <li>Your new website, built from the working preview, with every fix in the table above: 16 pages: Home, Services, Panel Upgrades, EV Charger Installation, Lighting &amp; Ceiling Fans, Home Rewiring, Generators, Smart Home Automation, Outlets &amp; Switches, Emergency Electrical Service, Reviews, About, Service Areas, Contact, a thank-you page after the quote form and your private Results Dashboard.</li>
             <li>Each of your eight services on its own page named with Dorchester and Boston: the signs to look for, what the work involves, a typical timeline, what to expect and common questions.</li>
             <li>Your real customer reviews on the home page and on a Reviews page.</li>
             <li>An About page with your photo, and a Service Areas page for Dorchester, South Boston and nearby neighborhoods.</li>
@@ -420,6 +437,7 @@ dl.terms dt { font-weight: 700; } dl.terms dd { margin: 2px 0 0; color: var(--mu
             <li>Your logo, your Massachusetts license number (#22667) and 749 Dorchester Ave on every page.</li>
             <li>Search setup: a title and description on every page, and business and service details written in code Google reads.</li>
             <li>Your quote form connected, so every request reaches your inbox.</li>
+            <li>A private Results Dashboard page that only you can open: visitors, most visited pages, phone or computer, and quote &amp; contact page visits.</li>
             <li>Every fact on the site confirmed by you. Anything we could not confirm is marked on the preview and stays off the live site until you confirm it.</li>
             <li>jmelectricsolutions.com moved off GoDaddy Website Builder onto the new site, with your email left as it is, and Google allowed to list the site from launch day.</li>
             <li>Your Google Business Profile checked and cleaned up.</li>
@@ -433,6 +451,7 @@ dl.terms dt { font-weight: 700; } dl.terms dd { margin: 2px 0 0; color: var(--mu
             <li>New customer reviews added to your Reviews page when you send them.</li>
             <li>A check every month that your quote form still reaches you.</li>
             <li>Keyword updates every month: we check what customers search for and what changed in Google&#x27;s latest updates, then adjust your page titles, descriptions and wording to match.</li>
+            <li>A private Results Dashboard on your website: visitors, most visited pages, phone or computer, and quote &amp; contact page visits, updated every few minutes.</li>
             </ul>
             <p class="noguar">Results depend on your market and competition; we don't guarantee rankings, calls or revenue.</p>
             <p class="price" style="margin-top:24px;font-size:34px">$0</p>
@@ -449,7 +468,7 @@ dl.terms dt { font-weight: 700; } dl.terms dd { margin: 2px 0 0; color: var(--mu
             <li><span>Electrician site, US agency</span><span><b>$5,800–$18,850</b> <a href="https://projectcostestimator.com/cost/industry/electrician">(ProjectCostEstimator, electrician sites, July 2026)</a></span></li>
             <li><span>Running an electrician site: hosting, tools and maintenance</span><span><b>$30–$150 a month</b> <a href="https://projectcostestimator.com/cost/industry/electrician">(ProjectCostEstimator, electrician sites, July 2026)</a></span></li>
               </ul>
-              <p class="small">Your build is $3,500: inside the freelancer range for a 10-page electrician site and right at the freelancer median for electrician sites, well below agency prices, while your new site has 15 pages. $150 a month sits at the top of the hosting-and-maintenance range and covers the hands-on work listed above, including monthly keyword updates. Figures checked 29 Oct 2026.</p>
+              <p class="small">Your build is $3,500: inside the freelancer range for a 10-page electrician site and right at the freelancer median for electrician sites, well below agency prices, while your new site has 16 pages, including your Results Dashboard. $150 a month sits at the top of the hosting-and-maintenance range and covers the hands-on work listed above, including monthly keyword updates. Figures checked 29 Oct 2026.</p>
             </div>
           </div>
           <div>
