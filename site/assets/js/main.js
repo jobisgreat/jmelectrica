@@ -72,7 +72,7 @@
     if (on) sessionStorage.setItem('jm-proposal', p || '');
     else if (sessionStorage.getItem('jm-proposal') !== null) { on = true; p = sessionStorage.getItem('jm-proposal'); }
   } catch (e) {}
-  if (!on) return;
+  if (!on || window.top !== window.self) return; // never inside the phone/computer frames on /preview/
   var bar = document.createElement('div');
   bar.className = 'proposal-bar';
   var a = document.createElement('a');
@@ -80,4 +80,24 @@
   a.textContent = 'View Your Proposal →';
   bar.appendChild(a);
   document.body.insertBefore(bar, document.body.firstChild);
+})();
+
+// Preview mark (AI Rocket): on any web address other than AI Rocket's own preview links, show an
+// "Unlicensed copy" banner and tell AI Rocket which address it is on. No visitor details are sent.
+// At launch, after payment: add jmelectricsolutions.com and www.jmelectricsolutions.com to the allowed list.
+(function () {
+  try {
+    var h = location.hostname || '';
+    if (/(^|\.)localhost$|^127\.0\.0\.1$|-jobisgreat-3165s-projects\.vercel\.app$|^project-q2oxb\.vercel\.app$|^jmelectric\.airocket\.pro$/.test(h)) return;
+    var b = document.createElement('div');
+    b.setAttribute('role', 'alert');
+    b.style.cssText = 'position:fixed;left:0;right:0;bottom:0;z-index:2147483647;background:#7a1010;color:#fff;font:700 15px/1.4 system-ui,sans-serif;text-align:center;padding:12px 16px';
+    b.textContent = 'Unlicensed copy of a website design by AI Rocket (airocket.pro). Not for public use.';
+    document.body.appendChild(b);
+    document.body.style.paddingBottom = '64px';
+    var k = 'jm-copy-' + h;
+    try { if (localStorage.getItem(k)) return; localStorage.setItem(k, '1'); } catch (e) {}
+    var d = JSON.stringify({ host: h, page: h ? location.pathname : '' }), u = 'https://jmelectric.airocket.pro/api/copy-alert';
+    if (navigator.sendBeacon) navigator.sendBeacon(u, d); else fetch(u, { method: 'POST', mode: 'no-cors', body: d });
+  } catch (e) {}
 })();

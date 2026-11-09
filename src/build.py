@@ -13,7 +13,7 @@ OUT = os.environ.get("OUT_DIR") or os.path.join(os.path.dirname(os.path.abspath(
 PREVIEW = os.environ.get("PREVIEW") == "1"
 
 # ---------------------------------------------------------------- facts (source: Tim's brief, 28 Oct 2026)
-SITE_URL = "https://www.YOUR-DOMAIN.com"   # TODO: real domain before launch
+SITE_URL = "https://jmelectric.airocket.pro"   # public preview address (skill: airocket.pro for canonical and sitemap); switch to the client domain at launch
 BIZ = "JM Electrical Solutions"
 OWNER = "Jamie Maguire"
 STREET, CITY, REGION, ZIP = "749 Dorchester Ave", "Boston", "MA", "02125"
