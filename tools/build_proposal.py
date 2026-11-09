@@ -30,6 +30,8 @@ DEPOSIT = BUILD // 2
 MONTHLY = 150
 PHONE_AIR = "(617) 499-0149"
 CHECKED = "29 Oct 2026"
+GOOGLE_CHECKED = "9 Nov 2026"  # core-update count re-read on the Google Search Status Dashboard
+SENT_MONTH = "November 2026"  # footer: the month the proposal is sent
 # Which photos are AI-made (skill rule: name them exactly). Tim to confirm the Jamie photo.
 AI_NOTE = "The photo of your building and vans at the top of the page is AI-made, a stand-in until we have your own photo."
 
@@ -130,6 +132,23 @@ GAPS = [
      "A current site, kept up every month on your monthly plan."),
 ]
 
+# Google ranking check: Ubersuggest serp_analysis from Boston (locId 1018127), 9 Nov 2026, no refresh.
+# Results file: /mnt/project-files/jm-electrical-proposal/rankings/2026-11-09_google-rankings.md
+# Ubersuggest returned only 1 to 4 regular results per search, so "not in the top N" uses that number.
+# "smart home installation boston" returned no data and is left out.
+GOOGLE_CHECK = [
+    # (search words, your website, your Google listing, map box names)
+    ("electrician dorchester", "Not in the top 2", "#1 in the map box", "JM Electrical Solutions, MJ Electrical Services, St. Marks Electricians"),
+    ("emergency electrician boston", "Not in the top 2", "#1 in the map box", "JM Electrical Solutions, Paul Brown Electric, E/R Electric"),
+    ("electrician boston", "Not in the top 2", "#2 in the map box", "Paul Brown Electric, JM Electrical Solutions, E/R Electric"),
+    ("electrician south boston", "Not in the top 2", "#2 in the map box", "Taylor Electrical, JM Electrical Solutions, Homelight Boston"),
+    ("panel upgrade boston", "Not in the top 1", "#2 in the map box", "Electric Hero, JM Electrical Solutions, Boston Light and Power"),
+    ("recessed lighting installation boston", "Not in the top 2", "#1 in the map box", "JM Electrical Solutions, Paul Brown Electric, E/R Electric"),
+    ("ev charger installation boston", "Not in the top 4", "Not shown", "No map box"),
+    ("house rewiring boston", "Not in the top 2", "Not shown", "Homelight Boston, Roscoe Electrical Boston"),
+    ("generator installation boston", "Not in the top 2", "Not shown", "Generator Supercenter of Boston, New England Generator, Mass Generators"),
+]
+
 SOURCES = [
     ("Electrician site, 10 pages, residential and commercial, freelancer", "$2,800–$5,500",
      "https://projectcostestimator.com/blog/electrician-website-cost-2026", "ProjectCostEstimator, electrician sites, June 2026"),
@@ -197,7 +216,7 @@ header { background: var(--ink); color: var(--onink); border-bottom: 3px solid v
 .eyebrow { font-size: 13px; text-transform: uppercase; letter-spacing: .14em; color: var(--accent); margin: 0 0 10px; font-weight: 700; }
 header .eyebrow { color: var(--accent-lt); }
 header .forge { font-size: 19px; font-weight: 600; margin: 0 0 10px; max-width: 46rem; }
-header .tagline { font-family: var(--display); font-weight: 800; font-size: clamp(20px, 2.4vw, 28px); line-height: 1.2; color: var(--accent-lt); margin: 0 0 14px; max-width: 32ch; }
+header .tagline { font-family: var(--display); font-weight: 800; font-size: clamp(20px, 2.4vw, 28px); line-height: 1.2; color: var(--accent-lt); margin: 0 0 14px; max-width: none; }
 header img.shoplogo { width: min(560px, 100%); height: auto; margin: 0 0 26px; }
 header h1 { font-size: clamp(36px, 5vw, 64px); max-width: 20ch; }
 header .sub { margin: 16px 0 0; max-width: 44rem; font-size: 19px; color: rgba(242,245,247,.82); }
@@ -237,7 +256,7 @@ dl.summary .pcols ul { margin: 4px 0 8px; padding-left: 20px; font-size: 16px; }
 dl.summary .pcols li { margin: 3px 0; }
 section[data-slide] { padding: 64px 0; border-bottom: 1px solid var(--line); scroll-margin-top: 16px; }
 section.alt { background: var(--alt); }
-section[data-slide] h2 { font-size: clamp(32px, 5vw, 52px); max-width: 22ch; }
+section[data-slide] h2 { font-size: clamp(32px, 5vw, 52px); max-width: none; }
 .lead { font-size: 19px; color: var(--muted); max-width: 46rem; margin: 18px 0 0; }
 .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; list-style: none; padding: 0; margin: 24px 0 0; }
 .grid3 li { background: var(--surface); border: 1px solid var(--line); border-top: 3px solid var(--accent); padding: 18px; }
@@ -261,9 +280,9 @@ dl.terms div { padding: 8px 0; border-bottom: 1px solid var(--line); }
 dl.terms dt { font-weight: 700; } dl.terms dd { margin: 2px 0 0; color: var(--muted); }
 .dark { background: var(--ink); color: var(--onink); border-top-color: var(--gold); }
 .dark ul { padding: 0; } .dark li { list-style: none; }
-/* Funnel headline and steps (Tim's wording, 23 Oct 2026) */
+/* Results Site headline and steps */
 .funnel { margin-top: 8px; background: var(--ink); border-top: 4px solid var(--gold); padding: 22px 20px; }
-.funnel h2 { color: var(--accent-lt); font-family: var(--display); font-weight: 800; text-transform: none; font-size: clamp(26px, 3.4vw, 38px); line-height: 1.15; max-width: 30ch; }
+.funnel h2 { color: var(--accent-lt); font-family: var(--display); font-weight: 800; text-transform: none; font-size: clamp(26px, 3.4vw, 38px); line-height: 1.15; max-width: none; }
 .syshead { font-family: var(--display); font-weight: 800; font-size: 22px; margin: 28px 0 0; }
 .sys { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 14px 0 0; padding: 0; list-style: none; }
 .sys li { border-left: 6px solid var(--gold); background: var(--surface); padding: 14px 16px; }
@@ -272,6 +291,23 @@ dl.terms dt { font-weight: 700; } dl.terms dd { margin: 2px 0 0; color: var(--mu
 .keep ul { margin: 6px 0 0; padding-left: 20px; } .keep li { margin: 4px 0; }
 .proof { margin: 16px 0 0; max-width: 46rem; }
 .dash { margin-top: 34px; }
+.cover { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 28px; align-items: start; }
+.cover .forfirm { font-size: 15px; text-transform: uppercase; letter-spacing: .12em; font-weight: 700; color: rgba(242,245,247,.75); margin: 0 0 10px; }
+.ataglance { border-top: 4px solid var(--gold); background: rgba(242,245,247,.06); padding: 16px 18px; font-size: 15px; }
+.ataglance .agh { font-family: var(--display); font-weight: 800; font-size: 20px; color: var(--accent-lt); margin: 0 0 8px; }
+.ataglance dl { margin: 0; } .ataglance dl div { padding: 7px 0; border-top: 1px solid rgba(242,245,247,.12); }
+.ataglance dt { font-size: 12px; text-transform: uppercase; letter-spacing: .12em; color: var(--accent-lt); font-weight: 700; }
+.ataglance dd { margin: 2px 0 0; } .ataglance a { color: var(--accent-lt); }
+@media (max-width: 900px) { .cover { grid-template-columns: 1fr; } }
+.gcheck { margin: 28px 0 0; border-top: 4px solid var(--red); background: rgba(242,245,247,.06); padding: 16px 18px; }
+.gcheck .gch { font-family: var(--display); font-weight: 800; font-size: 22px; margin: 0 0 8px; }
+.gcheck .gscroll { overflow-x: auto; }
+.gcheck table { width: 100%; border-collapse: collapse; font-size: 15px; min-width: 0; }
+.gcheck th, .gcheck td { text-align: left; padding: 8px 10px 8px 0; border-top: 1px solid rgba(242,245,247,.14); vertical-align: top; }
+.gcheck th { font-size: 12px; text-transform: uppercase; letter-spacing: .1em; color: var(--accent-lt); }
+@media (max-width: 700px) { .gcheck thead { display: none; } .gcheck tr { display: block; padding: 10px 0; border-top: 1px solid rgba(242,245,247,.14); } .gcheck td { display: block; border: 0; padding: 2px 0; } .gcheck td:first-child { font-weight: 700; } .gcheck td:nth-child(2)::before { content: "Your website: "; color: rgba(242,245,247,.6); } .gcheck td:nth-child(3):not(:empty)::before { content: "Your listing: "; color: rgba(242,245,247,.6); } .gcheck td:nth-child(4):not(:empty)::before { content: "Map box: "; color: rgba(242,245,247,.6); } }
+.stillbox { margin: 36px 0 0; border-top: 4px solid var(--gold); background: var(--ink); color: var(--onink); padding: 20px 20px 10px; }
+.stillbox .eyebrow { color: var(--accent-lt); } .stillbox ul { font-size: 17px; padding-left: 20px; }
 .dash .lead { max-width: 46rem; }
 .dash .dashhead { color: #f5c04a; font-size: clamp(26px, 3.4vw, 38px); line-height: 1.15; max-width: none; border-left: 8px solid #f5c04a; padding: 4px 0 4px 18px; margin-bottom: 18px; }
 .seochart{margin-top:28px;background:var(--ink);color:var(--onink);border-top:4px solid var(--gold);padding:16px;}
@@ -309,7 +345,7 @@ dl.terms dt { font-weight: 700; } dl.terms dd { margin: 2px 0 0; color: var(--mu
 .seonow p.b b{color:#f0b13c}
 .noguar{margin:14px 0 0;font-size:15px;font-weight:600;line-height:1.5}
 .seonote{margin:14px 0 0;font-size:15px;line-height:1.5;color:#f2f5f7} @media(min-width:1160px){.seonote{font-size:14px}}
-.ghead { font-family: var(--display); font-weight: 900; text-transform: uppercase; font-size: clamp(26px, 3.6vw, 40px); line-height: 1.1; margin: 48px 0 0; max-width: 24ch; }
+.ghead { font-family: var(--display); font-weight: 900; text-transform: uppercase; font-size: clamp(26px, 3.6vw, 40px); line-height: 1.1; margin: 48px 0 0; max-width: none; }
 .gstats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; list-style: none; padding: 0; margin: 20px 0 0; }
 .gstats li { background: var(--ink); border-top: 4px solid var(--gold); padding: 18px; }
 .gstats b { display: block; font-family: var(--display); font-weight: 900; font-size: clamp(34px, 4vw, 48px); line-height: 1; color: var(--accent-lt); }
@@ -340,6 +376,7 @@ dl.terms dt { font-weight: 700; } dl.terms dd { margin: 2px 0 0; color: var(--mu
 @media (max-width: 900px) { dl.summary { grid-template-columns: 1fr 1fr; } dl.summary div.nextcell { grid-column: 1 / -1; order: 2; } .grid3, .two, .sys { grid-template-columns: 1fr; } }
 @media (max-width: 640px) {
   table { display: none; } .cards { display: block; }
+  .gcheck table, .gcheck tbody { display: block !important; }
   dl.summary { grid-template-columns: 1fr; }
   dl.summary .pcols { grid-template-columns: 1fr; }
   .btn { width: 100%; }
@@ -384,7 +421,7 @@ SEO_CHART = """
               <line id="seoX" class="xhair" y1="12" y2="252" opacity="0"/>
             </svg>
             <div class="xlabs" aria-hidden="true"><span style="left:0.6%">Launch</span><span class="mid" style="left:21.6%;transform:translateX(-50%)">3 mo</span><span style="left:42.5%;transform:translateX(-50%)">6 mo</span><span class="mid" style="left:63.4%;transform:translateX(-50%)">9 mo</span><span style="left:84.4%;transform:translateX(-50%)">12 mo</span></div>
-            <p class="seocap">How easily nearby customers find you (illustration). Hover or tap to step through the year.</p>
+            <p class="seocap">How easily nearby customers find you (illustration).</p>
           </div>
           <div class="seonow"><p class="b"><b id="seoM1">Month 12</b> · Kept current: <span id="seoT1">12 monthly rounds so far, keeping up with AI scans that never stop.</span></p><p class="a"><b id="seoM2">Month 12</b> · Left alone: <span id="seoT2">No changes since launch. AI keeps scanning, so it slips a little more every month.</span></p></div>
           <p class="seonote">Illustration of the usual pattern, not a forecast. No real numbers on the chart. AI scans run all the time; the marks show the pattern, not exact dates.</p>
@@ -393,7 +430,7 @@ SEO_CHART = """
 """
 
 SEO_JS = """
-    // SEO chart (from the DeVellis Zrein proposal, 27 Oct 2026): draws on a loop while on screen; hover or tap to scrub; holds still for reduced motion.
+    // SEO chart (from the DeVellis Zrein proposal, 27 Oct 2026): draws on a loop while on screen and plays on its own (no hover or drag); holds still for reduced motion.
     (function () {
       // AI scans never stop (Tim, 28 Oct 2026): a mark every month, a scanning beam that rides the front of the gold line, and the left-alone line slips every month.
       var A = [30, 28.5, 26.5, 24, 21.5, 19, 16.5, 14, 11.5, 9, 6, 3, 0], B = [30, 33, 36, 40, 44, 47, 51, 55, 58, 62, 66, 69, 73], N = 12, UPD = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
@@ -452,17 +489,10 @@ SEO_JS = """
       }
       draw(N);
       var reduce = !("IntersectionObserver" in window) || window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      var raf = 0, visible = false, scrubbing = false;
+      var raf = 0, visible = false;
       function loop() { cancelAnimationFrame(raf); var start = performance.now(); (function step(now) { var f = Math.min(1, ((now - start) % 19000) / 14000), e = f < .5 ? 2 * f * f : 1 - Math.pow(-2 * f + 2, 2) / 2; draw(e * N); raf = requestAnimationFrame(step); })(start); }
-      if (!reduce) new IntersectionObserver(function (es) { visible = es.some(function (e) { return e.isIntersecting; }); cancelAnimationFrame(raf); if (visible && !scrubbing) loop(); }, { threshold: 0.3 }).observe(box);
-      function scrub(e) {
-        var r = svg.getBoundingClientRect(), vx = ((e.clientX - r.left) / r.width) * 640, t = Math.max(0, Math.min(N, ((vx - 4) / 536) * N));
-        scrubbing = true; cancelAnimationFrame(raf); draw(t);
-        var xh = $("seoX"); xh.setAttribute("x1", x(t)); xh.setAttribute("x2", x(t)); xh.setAttribute("opacity", 1);
-      }
-      $("seoReplay").addEventListener("click", function () { scrubbing = false; $("seoX").setAttribute("opacity", 0); if (reduce) { var st = performance.now(); cancelAnimationFrame(raf); (function step(now) { var f = Math.min(1, (now - st) / 14000); draw(f * N); if (f < 1) raf = requestAnimationFrame(step); })(st); } else loop(); });
-      svg.addEventListener("pointermove", scrub); svg.addEventListener("pointerdown", scrub);
-      svg.addEventListener("pointerleave", function () { scrubbing = false; $("seoX").setAttribute("opacity", 0); if (reduce) draw(N); else if (visible) loop(); });
+      if (!reduce) new IntersectionObserver(function (es) { visible = es.some(function (e) { return e.isIntersecting; }); cancelAnimationFrame(raf); if (visible) loop(); }, { threshold: 0.3 }).observe(box);
+      $("seoReplay").addEventListener("click", function () { if (reduce) { var st = performance.now(); cancelAnimationFrame(raf); (function step(now) { var f = Math.min(1, (now - st) / 14000); draw(f * N); if (f < 1) raf = requestAnimationFrame(step); })(st); } else loop(); });
     })();
 """
 
@@ -483,6 +513,11 @@ def proposal():
     deposit_attr = DEPOSIT_LINK or ""
     launch = val(LAUNCH, "launch time")
     gap_n = len(GAPS)
+    legal = val(LEGAL_NAME, "legal business name")
+    gcheck = "\n".join(
+        f'          <tr><td>“{html.escape(q)}”</td><td>{html.escape(w)}</td><td>{html.escape(l)}</td><td>{html.escape(m)}</td></tr>'
+        for q, w, l, m in GOOGLE_CHECK)
+    g_in_map = sum(1 for r in GOOGLE_CHECK if r[2] != "Not shown")
     forge = html.escape(FORGE_LINE) if FORGE_LINE else ph("Forge's one-line promise")
     domain = html.escape(DOMAIN) if DOMAIN else "your domain " + ph("domain")
 
@@ -491,11 +526,11 @@ def proposal():
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>JM Electrical Solutions · Not a brochure. A website that brings in work.</title>
+  <title>Your new website · Not a brochure. A website that brings in work.</title>
   <meta name="description" content="The {gap_n} gaps we found on jmelectricsolutions.com, our fix for each, and our proposal.">
   <meta name="robots" content="noindex, nofollow">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="JM Electrical Solutions · Not a brochure. A website that brings in work.">
+  <meta property="og:title" content="Your new website · Not a brochure. A website that brings in work.">
   <meta property="og:description" content="The {gap_n} gaps we found and how we fix each one. Your new website is built and ready to see.">
   <meta property="og:image" content="https://{PROPOSAL_HOST}/proposal/share.jpg">
   <meta property="og:image:width" content="1120">
@@ -515,10 +550,27 @@ def proposal():
   <header>
     <div class="wrap">
       <img class="shoplogo" src="jm-electrical-logo.webp" alt="JM Electrical Solutions logo, from your sign" width="919" height="303" onerror="this.onerror=null;this.src='jm-electrical-logo.png'">
-      <p class="forge">{forge}</p>
       <p class="tagline">Not a brochure. A website that brings in work.</p>
-      <h1>A website built to win you jobs.</h1>
-      <p class="sub">Your new website is built and working now, made from your Google reviews, your own photos and the facts on jmelectricsolutions.com. It comes with a private Results Dashboard, so you see who visits and what they look at.</p>
+      <div class="cover">
+        <div>
+          <p class="forfirm">Website proposal for {legal}</p>
+          <p class="forge">{forge}</p>
+          <h1>A website built to win you jobs.</h1>
+          <p class="sub">Your new website is built and working now, made from your Google reviews, your own photos and the facts on jmelectricsolutions.com. It comes with a private Results Dashboard, so you see who visits and what they look at.</p>
+        </div>
+        <aside class="ataglance" aria-label="At a glance">
+          <p class="agh">At a glance</p>
+          <dl>
+            <div><dt>Prepared for</dt><dd>{legal}</dd></div>
+            <div><dt>Prepared by</dt><dd>Tim Regan, AI Rocket</dd></div>
+            <div><dt>Scope</dt><dd>{TOTAL_PAGES} pages built to win you jobs, including your Results Dashboard. The monthly plan keeps every page working.</dd></div>
+            <div><dt>Results Dashboard</dt><dd>Your command center: see who visits, which pages they read, phone or computer, and how many reach your quote &amp; contact pages. Included in the monthly plan. <a href="{SITE}/stats/sample/?from=proposal" data-site="/stats/sample/">See the example →</a></dd></div>
+            <div><dt>Build</dt><dd>{money(BUILD)}: {money(DEPOSIT)} deposit at signing, {money(BUILD - DEPOSIT)} at launch</dd></div>
+            <div><dt>Monthly</dt><dd>{money(MONTHLY)} a month from launch day, 3-month minimum</dd></div>
+            <div><dt>Next step</dt><dd>Sit down together and go through the site, then <a href="#accept">sign and pay the deposit</a> when you're ready.</dd></div>
+          </dl>
+        </aside>
+      </div>
       <figure class="shot">
         <div class="frame"><img src="site-home.jpg" alt="The new JM Electrical Solutions home page on a computer" width="1440" height="900"></div>
         <figcaption>Your new home page, as a homeowner sees it on a computer. {AI_NOTE}</figcaption>
@@ -545,6 +597,18 @@ def proposal():
 {gap_cards}
       </ol>
       <p class="note">jmelectricsolutions.com, checked {CHECKED}.</p>
+      <div class="gcheck">
+        <p class="gch">What customers see on Google</p>
+        <p>We ran {len(GOOGLE_CHECK)} searches from Boston on {GOOGLE_CHECKED} for the work you do. Your Google listing showed up in Google's map box in {g_in_map} of them. Your website itself did not show up in the regular results for any of them.</p>
+        <div class="gscroll"><table>
+          <thead><tr><th>Search</th><th>Your website</th><th>Your Google listing</th><th>Google's map box shows</th></tr></thead>
+          <tbody>
+{gcheck}
+          <tr><td>“jm electrical solutions”</td><td>#1 · You come up first, but only for people who already know your name.</td><td></td><td></td></tr>
+          </tbody>
+        </table></div>
+        <p class="note">Google results: searches from Boston (Ubersuggest), {GOOGLE_CHECKED}. Ubersuggest shows only the first 1 to 4 regular results for each search, so “not in the top 2” means the first 2 regular results.</p>
+      </div>
       <dl class="summary">
         <div><dt>The gap</dt><dd>People who look you up find a two-page GoDaddy site: Home and Photo Gallery, with a “More” menu that repeats the same two links. The home page names only “a small wiring fix” and smart home automation, so panel upgrades, EV chargers, lighting and rewiring never come up. None of your 4.9-star reviews appear, there is no license number or street address, the quote form asks for an email but not a phone number, and the footer still says © 2018.</dd></div>
         <div><dt>The fix</dt><dd>A website built to win you jobs: a {TOTAL_PAGES}-page site, including your Results Dashboard, for homeowners and businesses around Dorchester and Boston, with a page for each of your eight services, your real customer reviews and a clear way to call or ask for a quote. It is set up to be found on Google: each service on its own page named with Dorchester and Boston, search details on every page, and your Google Business Profile cleaned up. Your monthly plan keeps it current so you keep getting found. You can <a href="{SITE}/?from=proposal" data-site="/">open the working preview</a> now: the eight service pages, the Reviews page and the quote form are already built.</dd></div>
@@ -595,7 +659,7 @@ def proposal():
       <div class="wrap">
         <p class="eyebrow">Why the monthly plan keeps it working</p>
         <p class="lead">Your website should bring in jobs, not just look nice.</p>
-        <div class="funnel"><h2>Anyone can build a pretty brochure website. We build the funnel system that turns visitors into clients.</h2></div>
+        <div class="funnel"><h2>Most sites are digital brochures. We build a Results Site that brings work and shows you the numbers.</h2></div>
         <p class="syshead">Your system, from search to phone call</p>
         <ul class="sys">
           <li><b>Found.</b>Homeowners and businesses searching for an electrician in Dorchester, South Boston and nearby Boston neighborhoods land on JM Electrical Solutions. Your Google listing is checked and cleaned up, and each of your eight services has its own page named with Dorchester and Boston, written with the title, description and business details those customers and AI search tools look for when they need that specific job done.</li>
@@ -615,11 +679,11 @@ def proposal():
           </figure>
           <div class="btns"><a class="btn outline" href="{SITE}/stats/sample/?from=proposal" data-site="/stats/sample/">Open the example dashboard →</a></div>
         </div>
-        <p class="ghead">Google changes the rules every day. Your site should keep up.</p>
+        <p class="ghead">Google changes the rules every day.<br>Your site should keep up.</p>
         <ul class="gstats">
           <li><b>4,000+</b><span>improvements Google made to Search in 2023 alone.</span><a href="https://www.google.com/intl/en_us/search/howsearchworks/how-search-works/rigorous-testing/">Google, How Search Works</a></li>
           <li><b>About 11 a day</b><span>That is the average: more than 4,000 changes over 365 days.</span><a href="https://www.google.com/intl/en_us/search/howsearchworks/how-search-works/rigorous-testing/">Google, How Search Works</a></li>
-          <li><b>3</b><span>core updates to how Google ranks sites since December 2025, the latest in May 2026.</span><a href="https://status.search.google.com/summary">Google Search Status Dashboard, checked {CHECKED}</a></li>
+          <li><b>3</b><span>core updates to how Google ranks sites since December 2025, the latest in May 2026.</span><a href="https://status.search.google.com/summary">Google Search Status Dashboard, checked {GOOGLE_CHECKED}</a></li>
         </ul>
         <p class="lead">Plenty of people can build a website. Most finish it, collect payment and move on. From that day the site starts to slip, because Google never stops changing how it ranks sites, and a site nobody touches falls behind the ones that keep up.</p>
         <p class="lead">SEO (search engine optimization) means the steady work that helps Google show JM Electrical Solutions when someone nearby searches something like “electrician Dorchester” or “EV charger installation Boston”. Every month we update your keywords: we check what customers are searching for and what changed in Google's latest updates, then adjust your page titles, descriptions and wording to match. Sites that sit still fall behind the ones that keep up. With your {money(MONTHLY)} a month, yours keeps up.</p>
@@ -644,7 +708,7 @@ def proposal():
       <div class="wrap">
         <p class="eyebrow">Proposal</p>
         <h2>Your new website</h2>
-        <p class="small">Prepared by AI Rocket for JM Electrical Solutions · October 2026</p>
+        <p class="small">Prepared by AI Rocket for JM Electrical Solutions · {SENT_MONTH}</p>
         <div class="two">
           <div class="box">
             <p class="price">{money(BUILD)}</p>
@@ -707,8 +771,17 @@ def proposal():
           </div>
         </div>
 
+        <div class="stillbox">
+          <p class="eyebrow">Before launch</p>
+          <p class="display" style="font-size:28px;color:var(--onink)">Still to confirm</p>
+          <p>Nothing goes on your real site until you confirm it.</p>
+          <ul>
+{ul(NEEDS)}
+          </ul>
+        </div>
+
         <div id="accept">
-          <p class="display" style="font-size:32px;color:var(--onink)">Ready for a website that wins you jobs?</p>
+          <p class="display" style="font-size:32px;color:var(--onink)">Ready for a website built to win you jobs?</p>
           <p>Sign the agreement, then pay the deposit by secure Stripe checkout. Questions first? AI Rocket: <a href="tel:+16174990149"><b>{PHONE_AIR}</b></a>.</p>
           <!-- E-signature: the deposit unlocks only after the agreement is signed. Saved by /api/sign to Supabase. -->
           <form class="signbox" id="signform" novalidate>
@@ -729,12 +802,6 @@ def proposal():
 
     <section data-slide>
       <div class="wrap">
-        <p class="eyebrow">What we need from you</p>
-        <h2>{len(NEEDS)} things only you can confirm</h2>
-        <p class="lead">Nothing goes on your real site until you confirm it.</p>
-        <ul style="font-size:18px;max-width:46rem">
-{ul(NEEDS)}
-        </ul>
         <div class="card">
           <img class="logo" src="airocket-logo.jpg" alt="AI Rocket" width="600" height="558">
           <img class="tim" src="tim-regan.jpg" alt="Tim Regan, founder of AI Rocket" width="400" height="400">
