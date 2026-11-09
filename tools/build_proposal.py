@@ -14,7 +14,7 @@ OUT = ROOT / "site"
 
 # ---- Fill these in before the proposal goes to Jamie. None shows a yellow "to confirm" mark. ----
 SITE = os.environ.get("JM_SITE", "")  # the site is served from this same project, so links stay relative
-PROPOSAL_HOST = "project-q2oxb.vercel.app"  # this project's Vercel address (Vercel project "jmelectrical")
+PROPOSAL_HOST = "jmelectric.airocket.pro"  # public address on airocket.pro (Vercel links sit behind the team login)
 DEPOSIT_LINK = None   # Stripe payment link for the $1,750 deposit (from Tim)
 LEGAL_NAME = None     # exact legal entity on the Order Form (from Tim), e.g. "JM Electrical Solutions, LLC"
 SIGNER = None         # signer's full name and title (from Tim)
@@ -854,7 +854,7 @@ def agreement():
         ("Monthly plan", f"{money(MONTHLY)} a month from launch day; 3-month minimum, then month to month"),
         ("Launch time", val(LAUNCH, "launch time")),
         ("Revisions", "Two rounds of revisions before launch, plus 30 days of fixes after launch"),
-        ("Proposal", f"{PROPOSAL_HOST}/proposal (the build scope listed there)"),
+        ("Proposal", "project-q2oxb.vercel.app/proposal (the build scope listed there)"),
     ]
     table = "\n".join(f"<tr><th>{k}</th><td>{v}</td></tr>" for k, v in rows)
     build_text = html.escape(
